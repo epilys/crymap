@@ -292,11 +292,11 @@ impl Account {
     }
 }
 
-fn path_is_inbox(path: &str) -> bool {
+pub fn path_is_inbox(path: &str) -> bool {
     Some("INBOX") == parse_mailbox_path(path).next()
 }
 
-fn normalise_path(path: &str) -> Result<String, Error> {
+pub fn normalise_path(path: &str) -> Result<String, Error> {
     let mut normalised = String::with_capacity(path.len());
     for part in parse_mailbox_path(path) {
         if !is_safe_name(part) {
@@ -315,7 +315,7 @@ fn normalise_path(path: &str) -> Result<String, Error> {
 /// An intermediate representation of a mailbox and/or subscription used by the
 /// `list` implementation.
 #[derive(Debug, Default)]
-struct HierarchyElement<'a> {
+pub struct HierarchyElement<'a> {
     /// If this is a real mailbox, the information about that mailbox.
     real: Option<&'a storage::Mailbox>,
     /// Whether this node is an existing subscription.
@@ -335,7 +335,7 @@ struct HierarchyElement<'a> {
 ///
 /// A post-order traversal of the tree processes the mailboxes in reverse
 /// lexicographical order.
-fn reify_mailbox_hierarchy<'a>(
+pub fn reify_mailbox_hierarchy<'a>(
     real_mailboxes: &'a [storage::Mailbox],
     subscriptions: &[String],
 ) -> HashMap<Rc<str>, HierarchyElement<'a>> {
@@ -449,7 +449,7 @@ pub struct ChildListResult {
 
 /// The bulk of the `LIST` logic, which works by doing a post-order traversal
 /// of the hierarchy.
-fn walk_hierarchy(
+pub fn walk_hierarchy(
     accum: &mut Vec<ListResponse>,
     request: &ListRequest,
     matcher: &impl Fn(&str) -> bool,

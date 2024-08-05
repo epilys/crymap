@@ -53,12 +53,12 @@ lazy_static! {
         openssl::pkey::PKey::generate_ed25519().unwrap();
 }
 
-struct Setup {
+pub struct Setup {
     system_dir: TempDir,
     master_key: Arc<MasterKey>,
 }
 
-fn set_up() -> Arc<Setup> {
+pub fn set_up() -> Arc<Setup> {
     crate::init_test_log();
 
     let mut lock = SYSTEM_DIR.lock().unwrap();
@@ -72,7 +72,7 @@ fn set_up() -> Arc<Setup> {
     setup
 }
 
-fn set_up_new_root() -> Setup {
+pub fn set_up_new_root() -> Setup {
     let system_dir = TempDir::new().unwrap();
     let master_key = Arc::new(MasterKey::new());
 
@@ -195,7 +195,7 @@ async fn run_server(
 }
 
 #[test]
-fn helo() {
+pub fn helo() {
     let setup = set_up();
     let mut cxn = setup.connect("helo");
 
@@ -228,7 +228,7 @@ fn helo() {
 }
 
 #[test]
-fn ehlo() {
+pub fn ehlo() {
     let setup = set_up();
     let mut cxn = setup.connect("ehlo");
 
@@ -283,7 +283,7 @@ fn ehlo() {
 }
 
 #[test]
-fn misc_commands() {
+pub fn misc_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("misc_commands");
     cxn.skip_pleasantries("HELO localhost");
@@ -298,7 +298,7 @@ fn misc_commands() {
 }
 
 #[test]
-fn out_of_order_commands() {
+pub fn out_of_order_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("out_of_order_commands");
     cxn.read_responses(); // Skip greeting
@@ -336,7 +336,7 @@ fn out_of_order_commands() {
 }
 
 #[test]
-fn wrong_greeting() {
+pub fn wrong_greeting() {
     let setup = set_up();
     let mut cxn = setup.connect("wrong_greeting");
 
@@ -345,7 +345,7 @@ fn wrong_greeting() {
 }
 
 #[test]
-fn auth_rejected_on_cleartext() {
+pub fn auth_rejected_on_cleartext() {
     let setup = set_up();
     let mut cxn = setup.connect("auth_rejected_on_cleartext");
     cxn.skip_pleasantries("HELO localhost");
@@ -355,7 +355,7 @@ fn auth_rejected_on_cleartext() {
 }
 
 #[test]
-fn inline_auth_success() {
+pub fn inline_auth_success() {
     let setup = set_up();
     let mut cxn = setup.connect("inline_auth_success");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -365,7 +365,7 @@ fn inline_auth_success() {
 }
 
 #[test]
-fn out_of_line_auth_success() {
+pub fn out_of_line_auth_success() {
     let setup = set_up();
     let mut cxn = setup.connect("out_of_line_auth_success");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -381,7 +381,7 @@ fn out_of_line_auth_success() {
 }
 
 #[test]
-fn bad_auth_method() {
+pub fn bad_auth_method() {
     let setup = set_up();
     let mut cxn = setup.connect("bad_auth_method");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -389,7 +389,7 @@ fn bad_auth_method() {
 }
 
 #[test]
-fn cancel_out_of_line_auth() {
+pub fn cancel_out_of_line_auth() {
     let setup = set_up();
     let mut cxn = setup.connect("out_of_line_auth_success");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -399,7 +399,7 @@ fn cancel_out_of_line_auth() {
 }
 
 #[test]
-fn auth_with_implicit_authorise_id() {
+pub fn auth_with_implicit_authorise_id() {
     let setup = set_up();
     let mut cxn = setup.connect("auth_with_implicit_authorise_id");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -408,7 +408,7 @@ fn auth_with_implicit_authorise_id() {
 }
 
 #[test]
-fn invalid_auth() {
+pub fn invalid_auth() {
     let setup = set_up();
     let mut cxn = setup.connect("invalid_auth");
     cxn.skip_pleasantries_with_tls("HELO localhost");
@@ -433,7 +433,7 @@ fn invalid_auth() {
     assert!(responses[0].starts_with("500 5.5.6"));
 }
 
-fn check_message(
+pub fn check_message(
     setup: &Setup,
     username: &str,
     id: SpooledMessageId,
@@ -484,7 +484,7 @@ fn check_message(
 }
 
 #[test]
-fn simple_message_spooling() {
+pub fn simple_message_spooling() {
     let email = "\
 From: Zim <zim@earth.com>\r
 To: tallest@irk.com\r
@@ -517,7 +517,7 @@ simple_message_spooling\r
 }
 
 #[test]
-fn long_message_valid_dkim() {
+pub fn long_message_valid_dkim() {
     let mut email = "\
 From: zim@earth.com\r
 To: tallest@irk.com\r
@@ -557,7 +557,7 @@ detected as binary even though the binary bit is at the very end..\r
 }
 
 #[test]
-fn implicit_return_path_from_from_header() {
+pub fn implicit_return_path_from_from_header() {
     let email = "\
 From: zim+implicit_return_path_from_from_header@earth.com
 To: tallest@irk.com
@@ -592,7 +592,7 @@ header.
 }
 
 #[test]
-fn huge_headers_via_data() {
+pub fn huge_headers_via_data() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("huge_headers_via_data");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -615,7 +615,7 @@ fn huge_headers_via_data() {
 }
 
 #[test]
-fn endless_headers_via_bdat() {
+pub fn endless_headers_via_bdat() {
     let setup = set_up();
     let mut cxn = setup.connect("endless_headers_via_data");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -646,7 +646,7 @@ fn endless_headers_via_bdat() {
 }
 
 #[test]
-fn bodiless_message() {
+pub fn bodiless_message() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("bodiless_message");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -667,7 +667,7 @@ fn bodiless_message() {
 }
 
 #[test]
-fn oversized_message_via_data() {
+pub fn oversized_message_via_data() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("oversized_message_via_data");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -694,7 +694,7 @@ fn oversized_message_via_data() {
 }
 
 #[test]
-fn oversized_message_via_small_bdats() {
+pub fn oversized_message_via_small_bdats() {
     let setup = set_up();
     let (mut cxn, spool_rx) =
         setup.connect2("oversized_message_via_small_bdats");
@@ -736,7 +736,7 @@ fn oversized_message_via_small_bdats() {
 }
 
 #[test]
-fn oversized_message_via_huge_bdat() {
+pub fn oversized_message_via_huge_bdat() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("oversized_message_via_huge_bdat");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -770,7 +770,7 @@ fn oversized_message_via_huge_bdat() {
 }
 
 #[test]
-fn no_from_header() {
+pub fn no_from_header() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("no_from_header");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -794,7 +794,7 @@ fn no_from_header() {
 }
 
 #[test]
-fn two_from_headers() {
+pub fn two_from_headers() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("two_from_headers");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -818,7 +818,7 @@ fn two_from_headers() {
 }
 
 #[test]
-fn bad_from_header() {
+pub fn bad_from_header() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("bad_from_header");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -841,7 +841,7 @@ fn bad_from_header() {
 }
 
 #[test]
-fn return_path_wrong_domain() {
+pub fn return_path_wrong_domain() {
     let setup = set_up();
     let mut cxn = setup.connect("return_path_wrong_domain");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -849,7 +849,7 @@ fn return_path_wrong_domain() {
 }
 
 #[test]
-fn return_path_wrong_user() {
+pub fn return_path_wrong_user() {
     let setup = set_up();
     let mut cxn = setup.connect("return_path_wrong_user");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -857,7 +857,7 @@ fn return_path_wrong_user() {
 }
 
 #[test]
-fn from_header_wrong_domain() {
+pub fn from_header_wrong_domain() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("from_header_wrong_domain");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -881,7 +881,7 @@ from_header_wrong_domain
 }
 
 #[test]
-fn from_header_wrong_user() {
+pub fn from_header_wrong_user() {
     let setup = set_up();
     let (mut cxn, spool_rx) = setup.connect2("from_header_wrong_user");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -905,7 +905,7 @@ from_header_wrong_user
 }
 
 #[test]
-fn auth_gaz_send_gäz() {
+pub fn auth_gaz_send_gäz() {
     let email = "Subject: Gaz/Gäz
 From: <gäz@earth.com>
 
@@ -936,7 +936,7 @@ auth_gaz_send_gäz
 }
 
 #[test]
-fn auth_gäz_send_gaz() {
+pub fn auth_gäz_send_gaz() {
     let email = "Subject: Gäz/Gaz
 From: <gaz@earth.com>
 
@@ -967,7 +967,7 @@ auth_gäz_send_gaz
 }
 
 #[test]
-fn bad_recipient() {
+pub fn bad_recipient() {
     let setup = set_up();
     let mut cxn = setup.connect("bad_recipient");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");
@@ -977,7 +977,7 @@ fn bad_recipient() {
 }
 
 #[test]
-fn too_many_recipients() {
+pub fn too_many_recipients() {
     let setup = set_up();
     let mut cxn = setup.connect("too_many_recipients");
     cxn.quick_log_in("HELO localhost", "zim", "hunter2");

@@ -68,7 +68,7 @@ pub struct Verifier<'a> {
     subs: Vec<Result<SubVerifier<'a>, String>>,
 }
 
-struct SubVerifier<'a> {
+pub struct SubVerifier<'a> {
     header: Header<'a>,
     hasher: hash::BodyHasher,
 }

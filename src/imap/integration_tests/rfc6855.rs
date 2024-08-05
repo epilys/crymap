@@ -39,12 +39,12 @@ use super::defs::*;
 use crate::test_data::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("6855capa", "UTF8=ACCEPT");
 }
 
 #[test]
-fn mailbox_names() {
+pub fn mailbox_names() {
     let setup = set_up();
     let mut clientu = setup.connect("6855manaU");
     let mut clienta = setup.connect("6855manaA");
@@ -98,7 +98,7 @@ fn mailbox_names() {
 }
 
 #[test]
-fn utf8_literal_append() {
+pub fn utf8_literal_append() {
     let setup = set_up();
     let mut client = setup.connect("6855ulia");
     quick_log_in(&mut client);

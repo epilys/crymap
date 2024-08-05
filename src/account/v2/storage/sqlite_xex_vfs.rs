@@ -142,7 +142,7 @@ impl XexVfs {
 ///
 /// It must be inside an `Arc` so that it is not dropped until all references
 /// are gone.
-struct VfsWrapper {
+pub struct VfsWrapper {
     vfs: UnsafeCell<sqlite3_vfs>,
     /// The SQLite name of the VFS. `vfs` holds a raw pointer to the content.
     name: CString,
@@ -155,7 +155,7 @@ unsafe impl Send for VfsWrapper {}
 unsafe impl Sync for VfsWrapper {}
 
 /// The content of `sqlite3_vfs::pAppData` (inside a `Box`).
-struct VfsAppData {
+pub struct VfsAppData {
     master_key: Arc<MasterKey>,
     /// A pointer back to the `VfsWrapper`. Each file opened promotes this to a
     /// strong reference to ensure the VFS is not deleted if there are still
@@ -260,7 +260,7 @@ impl xex::Backing for DelegateBacking {
     }
 }
 
-fn zero_or_err(rc: c_int) -> Result<(), c_int> {
+pub fn zero_or_err(rc: c_int) -> Result<(), c_int> {
     if 0 == rc {
         Ok(())
     } else {

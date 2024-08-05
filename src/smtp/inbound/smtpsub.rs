@@ -93,7 +93,7 @@ pub async fn serve_smtpsub(
     .0
 }
 
-struct SmtpsubService {
+pub struct SmtpsubService {
     log_prefix: LogPrefix,
     config: Arc<SystemConfig>,
     data_root: PathBuf,
@@ -600,7 +600,7 @@ impl SmtpsubService {
     }
 }
 
-struct DeliverableMessage {
+pub struct DeliverableMessage {
     data_buffer: BufferReader,
     trace_headers: String,
     transfer: SmtpTransfer,

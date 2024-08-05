@@ -21,7 +21,7 @@ use crate::account::model::Flag;
 use crate::support::error::Error;
 
 #[test]
-fn basic_success() {
+pub fn basic_success() {
     let setup = set_up();
     let mut client = setup.connect("3501sebs");
     quick_log_in(&mut client);
@@ -165,7 +165,7 @@ fn basic_success() {
 }
 
 #[test]
-fn close_and_expunge() {
+pub fn close_and_expunge() {
     let setup = set_up();
     let mut client = setup.connect("3501sece");
     quick_log_in(&mut client);
@@ -202,7 +202,7 @@ fn close_and_expunge() {
 }
 
 #[test]
-fn error_conditions() {
+pub fn error_conditions() {
     let setup = set_up();
     let mut client = setup.connect("3501seec");
     quick_log_in(&mut client);
@@ -255,7 +255,7 @@ fn error_conditions() {
 }
 
 #[test]
-fn keywords_included_in_flags() {
+pub fn keywords_included_in_flags() {
     let setup = set_up();
     let mut client = setup.connect("3501sekf");
     quick_log_in(&mut client);

@@ -29,7 +29,7 @@ use crate::support::system_config::SystemConfig;
 
 #[derive(StructOpt)]
 #[structopt(max_term_width = 80)]
-enum Command {
+pub enum Command {
     /// Commands which connect to a remote Crymap server system.
     Remote(RemoteSubcommand),
     /// Commands to be run on the Crymap server system.
@@ -62,7 +62,7 @@ enum DevSubcommand {
 
 #[cfg(feature = "dev-tools")]
 #[derive(StructOpt)]
-struct CompilePslCommand {
+pub struct CompilePslCommand {
     infile: PathBuf,
     outfile: PathBuf,
 }
@@ -426,7 +426,7 @@ pub fn main() {
     }
 }
 
-fn server(mut cmd: ServerSubcommand) {
+pub fn server(mut cmd: ServerSubcommand) {
     let common = cmd.common_options();
     let root = common.root.unwrap_or_else(|| {
         if Path::new("/etc/crymap/crymap.toml").is_file() {

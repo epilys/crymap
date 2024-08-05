@@ -70,7 +70,7 @@ pub enum Op {
 const UNKNOWN: u64 = 2;
 const TRUE: u64 = 1;
 
-struct Stack(u64);
+pub struct Stack(u64);
 
 #[allow(clippy::unusual_byte_groupings)]
 impl Stack {
@@ -190,7 +190,7 @@ pub fn eval(ops: &[Op], data: &SearchData) -> Option<bool> {
     }
 }
 
-fn cmp<T: Ord>(
+pub fn cmp<T: Ord>(
     value: Option<&T>,
     relative: &T,
     lt: bool,
@@ -204,7 +204,7 @@ fn cmp<T: Ord>(
     })
 }
 
-fn cmp_date(
+pub fn cmp_date(
     value: Option<&DateTime<FixedOffset>>,
     relative: &NaiveDate,
     lt: bool,

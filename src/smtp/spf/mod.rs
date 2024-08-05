@@ -16,9 +16,9 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod driver;
-mod eval;
-mod syntax;
+pub mod driver;
+pub mod eval;
+pub mod syntax;
 
 #[allow(unused_imports)]
 pub use driver::run;

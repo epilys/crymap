@@ -20,7 +20,7 @@ use super::super::defs::*;
 use super::extract_highest_modseq;
 
 #[test]
-fn condstore_fetch() {
+pub fn condstore_fetch() {
     let setup = set_up();
     let mut client = setup.connect("7162cfcf");
     quick_log_in(&mut client);

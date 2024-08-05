@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("5258capa", "LIST-EXTENDED");
 }
 
 #[test]
-fn return_options_honoured() {
+pub fn return_options_honoured() {
     let setup = set_up();
     let mut client = setup.connect("5258retn");
     quick_log_in(&mut client);
@@ -99,7 +99,7 @@ fn return_options_honoured() {
 }
 
 #[test]
-fn rfc_examples() {
+pub fn rfc_examples() {
     // Refer to the `list_extended` test in `account::account::test` for more
     // explanation on some of the (inconsequential) differences from the RFC
     // here.

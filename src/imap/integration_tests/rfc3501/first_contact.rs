@@ -21,7 +21,7 @@ use std::borrow::Cow;
 use super::super::defs::*;
 
 #[test]
-fn greeting_goodbye() {
+pub fn greeting_goodbye() {
     let setup = set_up();
     let mut client = setup.connect("3501fcgg");
 
@@ -49,7 +49,7 @@ fn greeting_goodbye() {
 }
 
 #[test]
-fn request_capabilities() {
+pub fn request_capabilities() {
     let setup = set_up();
     let mut client = setup.connect("3501fcrc");
 

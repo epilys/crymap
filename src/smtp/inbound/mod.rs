@@ -16,21 +16,21 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod bridge;
-mod delivery;
-mod lmtp;
-mod server;
-mod smtpin;
-mod smtpsub;
+pub mod bridge;
+pub mod delivery;
+pub mod lmtp;
+pub mod server;
+pub mod smtpin;
+pub mod smtpsub;
 
 #[cfg(test)]
-mod integration_test_common;
+pub mod integration_test_common;
 #[cfg(test)]
-mod lmtp_integration_tests;
+pub mod lmtp_integration_tests;
 #[cfg(test)]
-mod smtpin_integration_tests;
+pub mod smtpin_integration_tests;
 #[cfg(test)]
-mod smtpsub_integration_tests;
+pub mod smtpsub_integration_tests;
 
 pub use lmtp::serve_lmtp;
 pub use smtpin::serve_smtpin;

@@ -475,7 +475,7 @@ impl Xex {
 }
 
 const TWEAK_SECTOR_SIZE_BLOCKS: u64 = 64;
-struct Tweaker {
+pub struct Tweaker {
     sector: u64,
     base: u128,
 }
@@ -519,7 +519,7 @@ impl Tweaker {
 }
 
 /// Compute `n * 2**exp2` in GF(2**128) for small values of `exp2`.
-fn gf128_mul_exp2(n: u128, exp2: u32) -> u128 {
+pub fn gf128_mul_exp2(n: u128, exp2: u32) -> u128 {
     debug_assert!(exp2 <= 120);
 
     if 0 == exp2 {

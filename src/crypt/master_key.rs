@@ -226,7 +226,7 @@ impl MasterKey {
     }
 }
 
-fn hash_password(
+pub fn hash_password(
     password: &[u8],
     salt: &[u8],
     algorithm: Algorithm,

@@ -42,7 +42,7 @@ pub struct ContentDecoder<V: ?Sized> {
     decoder: Option<ContentDecoderImpl>,
 }
 
-struct ContentDecoderImpl {
+pub struct ContentDecoderImpl {
     content_transfer_encoding: header::ContentTransferEncoding,
     charset_decoder: Option<encoding_rs::Decoder>,
     decode_utf7: bool,

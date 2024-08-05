@@ -19,7 +19,7 @@
 use super::super::defs::*;
 
 #[test]
-fn condstore_status_highest_modseq() {
+pub fn condstore_status_highest_modseq() {
     let setup = set_up();
     let mut client = setup.connect("7162cshm");
     quick_log_in(&mut client);

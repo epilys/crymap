@@ -157,7 +157,7 @@ pub struct MailboxState {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, Copy)]
-struct SoftExpungement {
+pub struct SoftExpungement {
     #[serde(with = "chrono::serde::ts_seconds")]
     deadline: DateTime<Utc>,
     uid: Uid,
@@ -882,7 +882,7 @@ pub struct StateTransaction {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-enum StateMutation {
+pub enum StateMutation {
     AddFlag(Uid, Flag),
     RmFlag(Uid, Flag),
     Expunge(

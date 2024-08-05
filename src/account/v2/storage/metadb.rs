@@ -1788,7 +1788,7 @@ impl ConnectionExt for rusqlite::Connection {
     }
 }
 
-fn intern_flag(
+pub fn intern_flag(
     txn: &rusqlite::Connection,
     flag: &Flag,
 ) -> Result<FlagId, Error> {
@@ -1807,7 +1807,7 @@ fn intern_flag(
     Ok(FlagId(flag_id))
 }
 
-fn create_mailbox(
+pub fn create_mailbox(
     txn: &rusqlite::Connection,
     parent: MailboxId,
     name: &str,
@@ -1848,7 +1848,7 @@ fn create_mailbox(
 ///
 /// This validates that all elements of the path are safe names, including the
 /// final one.
-fn create_parent_hierarchy<'a>(
+pub fn create_parent_hierarchy<'a>(
     txn: &rusqlite::Connection,
     path: &'a str,
 ) -> Result<(MailboxId, &'a str), Error> {
@@ -1874,7 +1874,7 @@ fn create_parent_hierarchy<'a>(
     Err(Error::UnsafeName)
 }
 
-fn look_up_mailbox(
+pub fn look_up_mailbox(
     txn: &rusqlite::Connection,
     parent_id: MailboxId,
     name: &str,
@@ -1887,7 +1887,7 @@ fn look_up_mailbox(
     .map_err(Into::into)
 }
 
-fn move_mailbox(
+pub fn move_mailbox(
     txn: &rusqlite::Connection,
     mailbox_id: MailboxId,
     new_parent: MailboxId,
@@ -1949,7 +1949,7 @@ fn move_mailbox(
     Ok(())
 }
 
-fn get_message_by_path(
+pub fn get_message_by_path(
     cxn: &rusqlite::Connection,
     path: &str,
 ) -> Result<Option<MessageId>, Error> {
@@ -1972,7 +1972,7 @@ pub fn message_summary_values(path: &str) -> (u8, u16) {
     (hash as u8, ((hash >> 8) as u16).max(1))
 }
 
-fn intern_message_as_orphan(
+pub fn intern_message_as_orphan(
     cxn: &rusqlite::Connection,
     path: &str,
 ) -> Result<MessageId, Error> {
@@ -1990,7 +1990,7 @@ fn intern_message_as_orphan(
     Ok(MessageId(cxn.last_insert_rowid()))
 }
 
-fn append_mailbox_messages(
+pub fn append_mailbox_messages(
     cxn: &rusqlite::Connection,
     mailbox_id: MailboxId,
     savedate: UnixTimestamp,
@@ -2059,7 +2059,7 @@ fn append_mailbox_messages(
 /// ascending) from `src_mailbox_id` into `dst_mailbox_id`.
 ///
 /// Returns the parallel ranges of messages that were actually copied.
-fn copy_mailbox_messages(
+pub fn copy_mailbox_messages(
     txn: &rusqlite::Connection,
     src_mailbox_id: MailboxId,
     src_uids: &mut dyn Iterator<Item = Uid>,
@@ -2131,7 +2131,7 @@ fn copy_mailbox_messages(
 /// Expunges the given messages from the given mailbox.
 ///
 /// Non-existent messages are silently skipped.
-fn expunge_mailbox_messages(
+pub fn expunge_mailbox_messages(
     txn: &rusqlite::Connection,
     mailbox_id: MailboxId,
     messages: &mut dyn Iterator<Item = Uid>,
@@ -2169,7 +2169,7 @@ fn expunge_mailbox_messages(
 /// UID is at least `min_uid`.
 ///
 /// `recent_uid` is used to determine the value of the `recent` field.
-fn fetch_initial_messages(
+pub fn fetch_initial_messages(
     txn: &rusqlite::Connection,
     mailbox_id: MailboxId,
     min_uid: Uid,
@@ -2228,7 +2228,7 @@ fn fetch_initial_messages(
 }
 
 /// Poll for flags added with an ID greater than `max_known_flag`.
-fn poll_new_flags(
+pub fn poll_new_flags(
     txn: &rusqlite::Connection,
     max_known_flag: FlagId,
 ) -> Result<Vec<(FlagId, Flag)>, Error> {
@@ -2242,7 +2242,7 @@ fn poll_new_flags(
 
 /// Poll for updates to messages with a UID less than or equal to
 /// `max_known_uid` and which have been modified after `max_message_modseq`.
-fn poll_updated_messages(
+pub fn poll_updated_messages(
     txn: &rusqlite::Connection,
     mailbox_id: MailboxId,
     max_known_uid: Option<Uid>,
@@ -2308,7 +2308,7 @@ fn poll_updated_messages(
 }
 
 /// Ensures that `id` represents an extant and selectable mailbox.
-fn require_selectable_mailbox(
+pub fn require_selectable_mailbox(
     cxn: &rusqlite::Connection,
     id: MailboxId,
 ) -> Result<(), Error> {
@@ -2323,7 +2323,7 @@ fn require_selectable_mailbox(
     }
 }
 
-fn selectable_mailbox_status(
+pub fn selectable_mailbox_status(
     cxn: &rusqlite::Connection,
     mailbox_id: MailboxId,
 ) -> Result<MailboxStatus, Error> {
@@ -2344,7 +2344,7 @@ fn selectable_mailbox_status(
 }
 
 /// Allocates a new `Modseq` for a change within the given mailbox.
-fn new_modseq(
+pub fn new_modseq(
     cxn: &rusqlite::Connection,
     id: MailboxId,
 ) -> Result<Modseq, Error> {

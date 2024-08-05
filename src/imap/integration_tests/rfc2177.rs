@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("2177capa", "IDLE");
 }
 
 #[test]
-fn bad_idle() {
+pub fn bad_idle() {
     let setup = set_up();
     let mut client = setup.connect("2177badi");
     quick_log_in(&mut client);
@@ -39,7 +39,7 @@ fn bad_idle() {
 }
 
 #[test]
-fn test_idle() {
+pub fn test_idle() {
     let setup = set_up();
     let mut client = setup.connect("2177idle");
     quick_log_in(&mut client);
@@ -120,7 +120,7 @@ fn test_idle() {
 }
 
 #[test]
-fn delete_mailbox_during_idle() {
+pub fn delete_mailbox_during_idle() {
     let setup = set_up();
     let mut client = setup.connect("2177dmdi");
     quick_log_in(&mut client);
@@ -145,7 +145,7 @@ fn delete_mailbox_during_idle() {
 }
 
 #[test]
-fn idle_works_with_extremely_long_paths() {
+pub fn idle_works_with_extremely_long_paths() {
     const MXNAME: &str = "2177ixlp/\
          01234567891123456789212345678931234567894123456789\
          51234567896123456789712345678981234567899123456789/\
@@ -178,7 +178,7 @@ fn idle_works_with_extremely_long_paths() {
 }
 
 #[test]
-fn overlong_done_line() {
+pub fn overlong_done_line() {
     let setup = set_up();
     let mut client = setup.connect("2177oldl");
     quick_log_in(&mut client);

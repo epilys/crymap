@@ -20,12 +20,12 @@ use super::defs::*;
 use crate::account::model::Flag;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("6851capa", "MOVE");
 }
 
 #[test]
-fn test_move() {
+pub fn test_move() {
     let setup = set_up();
 
     let mut client = setup.connect("6851move");

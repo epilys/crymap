@@ -350,7 +350,7 @@ pub fn spawn_lookups(
     }
 }
 
-fn spawn_name_lookups<T, R, F, A>(
+pub fn spawn_name_lookups<T, R, F, A>(
     map: &mut CacheMap<T>,
     tasks: &mut Vec<tokio::task::JoinHandle<()>>,
     cache: &Rc<RefCell<Cache>>,
@@ -400,7 +400,7 @@ fn spawn_name_lookups<T, R, F, A>(
     }
 }
 
-fn to_entry<T>(
+pub fn to_entry<T>(
     r: Result<T, hickory_resolver::error::ResolveError>,
 ) -> Entry<T> {
     use hickory_resolver::error::ResolveErrorKind as Rek;

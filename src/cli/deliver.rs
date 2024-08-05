@@ -117,7 +117,7 @@ impl<'a, 'b> DeliveryTarget for (&'a mut DeliveryAccount, &'b str) {
     }
 }
 
-fn run_delivery(
+pub fn run_delivery(
     cmd: &ServerDeliverSubcommand,
     items: impl Iterator<Item = PathBuf>,
     mut stdin: impl Read,
@@ -142,7 +142,7 @@ fn run_delivery(
     Ok(())
 }
 
-fn deliver_single(
+pub fn deliver_single(
     cmd: &ServerDeliverSubcommand,
     item: &Path,
     stdin: &mut impl Read,
@@ -163,7 +163,7 @@ fn deliver_single(
     Ok(())
 }
 
-fn extract_maildir_flags(path: &Path) -> impl Iterator<Item = Flag> + '_ {
+pub fn extract_maildir_flags(path: &Path) -> impl Iterator<Item = Flag> + '_ {
     path.extension()
         .and_then(|ext| ext.to_str())
         .unwrap_or("")
@@ -179,14 +179,14 @@ fn extract_maildir_flags(path: &Path) -> impl Iterator<Item = Flag> + '_ {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum LineEndingDisposition {
+pub enum LineEndingDisposition {
     Unknown,
     Unix,
     Dos,
 }
 
 #[derive(Debug, Clone)]
-struct NormaliseLineEnding<R> {
+pub struct NormaliseLineEnding<R> {
     inner: R,
     disposition: LineEndingDisposition,
     has_trailing_cr: bool,

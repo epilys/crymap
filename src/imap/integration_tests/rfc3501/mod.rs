@@ -16,13 +16,13 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod auth;
-mod bad_commands;
-mod fetch;
-mod first_contact;
-mod flags;
-mod literal;
-mod mailboxes;
-mod messages;
-mod search;
-mod select;
+pub mod auth;
+pub mod bad_commands;
+pub mod fetch;
+pub mod first_contact;
+pub mod flags;
+pub mod literal;
+pub mod mailboxes;
+pub mod messages;
+pub mod search;
+pub mod select;

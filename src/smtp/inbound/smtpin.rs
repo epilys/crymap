@@ -109,7 +109,7 @@ pub async fn serve_smtpin(
     .0
 }
 
-struct SmtpinService {
+pub struct SmtpinService {
     log_prefix: LogPrefix,
     config: Arc<SystemConfig>,
     common_paths: Arc<CommonPaths>,
@@ -128,7 +128,7 @@ struct SmtpinService {
     return_path: String,
 }
 
-struct DomainInfo {
+pub struct DomainInfo {
     subdomain: Rc<dns::Name>,
     org_domain: Rc<dns::Name>,
     dmarc_domain: Option<Rc<dns::Name>>,
@@ -817,7 +817,7 @@ impl SmtpinService {
     }
 }
 
-enum AsyncValue<T> {
+pub enum AsyncValue<T> {
     Ready(T),
     Pending(tokio::task::JoinHandle<T>),
 }
@@ -921,7 +921,7 @@ pub(super) async fn buffer_headers(
     Ok((header_buffer, header_end))
 }
 
-fn format_spf_header(
+pub fn format_spf_header(
     s: &mut String,
     receiver: &str,
     client_ip: IpAddr,
@@ -994,7 +994,7 @@ pub(super) fn format_received_header(
     let _ = write!(s, "\t{smtp_date}\r\n");
 }
 
-fn make_header_comment_safe(s: &str) -> Cow<'_, str> {
+pub fn make_header_comment_safe(s: &str) -> Cow<'_, str> {
     const MAX_LEN: usize = 200;
 
     fn acceptable_char(c: char) -> bool {
@@ -1017,14 +1017,14 @@ fn make_header_comment_safe(s: &str) -> Cow<'_, str> {
     }
 }
 
-struct DkimResult {
-    comments: String,
-    result: &'static str,
-    pass: DkimStatus,
+pub struct DkimResult {
+    pub comments: String,
+    pub result: &'static str,
+    pub pass: DkimStatus,
 }
 
 #[derive(Clone, Copy)]
-enum DkimStatus {
+pub enum DkimStatus {
     Pass,
     PermError,
     TempError,
@@ -1032,7 +1032,7 @@ enum DkimStatus {
     Fail,
 }
 
-fn consolidate_dkim_results(
+pub fn consolidate_dkim_results(
     org_domain: &dns::Name,
     allow_subdomains: bool,
     dkim_results: impl Iterator<Item = dkim::Outcome>,
@@ -1175,7 +1175,7 @@ fn consolidate_dkim_results(
     }
 }
 
-fn authenticate_message_impl(
+pub fn authenticate_message_impl(
     local_host_name: &str,
     peer_ip: IpAddr,
     enable_reject: bool,

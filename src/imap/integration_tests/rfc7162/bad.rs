@@ -19,7 +19,7 @@
 use super::super::defs::*;
 
 #[test]
-fn condstore_bad_usage() {
+pub fn condstore_bad_usage() {
     let setup = set_up();
     let mut client = setup.connect("7162bacs");
     quick_log_in(&mut client);
@@ -39,7 +39,7 @@ fn condstore_bad_usage() {
 }
 
 #[test]
-fn qresync_bad_usage() {
+pub fn qresync_bad_usage() {
     let setup = set_up();
     let mut client = setup.connect("7162baqr");
     quick_log_in(&mut client);

@@ -21,12 +21,12 @@ use std::borrow::Cow;
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("4731capa", "ESEARCH");
 }
 
 #[test]
-fn test_esearch() {
+pub fn test_esearch() {
     let setup = set_up();
     let mut client = setup.connect("4731esrc");
     quick_log_in(&mut client);
@@ -108,7 +108,7 @@ fn test_esearch() {
 }
 
 #[test]
-fn condstore_interaction() {
+pub fn condstore_interaction() {
     let setup = set_up();
     let mut client = setup.connect("4731csia");
     quick_log_in(&mut client);
@@ -222,7 +222,7 @@ fn condstore_interaction() {
     );
 }
 
-fn esearch_eq(
+pub fn esearch_eq(
     mut expected: s::EsearchResponse<'_>,
     client: &mut PipeClient,
     command: &str,

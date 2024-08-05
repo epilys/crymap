@@ -43,7 +43,7 @@ pub struct BufferReader {
     on_disk: Option<OnDiskInfo>,
 }
 
-struct OnDiskInfo {
+pub struct OnDiskInfo {
     context: NakedCryptContext,
     cryptor: openssl::symm::Crypter,
     file: fs::File,

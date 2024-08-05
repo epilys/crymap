@@ -122,7 +122,7 @@ pub fn ew_decode(word: &str) -> Option<String> {
     decode_charset(charset, &content).map(|r| r.into_owned())
 }
 
-fn decode_xfer<'a>(xfer: &str, content: &'a [u8]) -> Option<Cow<'a, [u8]>> {
+pub fn decode_xfer<'a>(xfer: &str, content: &'a [u8]) -> Option<Cow<'a, [u8]>> {
     match xfer {
         "q" | "Q" => Some(qp_decode(content).0),
         "b" | "B" => base64::decode(content).ok().map(Cow::Owned),
@@ -130,7 +130,7 @@ fn decode_xfer<'a>(xfer: &str, content: &'a [u8]) -> Option<Cow<'a, [u8]>> {
     }
 }
 
-fn decode_charset<'a>(
+pub fn decode_charset<'a>(
     charset: &str,
     content: &'a [u8],
 ) -> Option<Cow<'a, str>> {

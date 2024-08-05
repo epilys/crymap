@@ -98,15 +98,15 @@ macro_rules! selected {
     };
 }
 
-mod auth;
-mod commands;
-mod defs;
-mod fetch;
-mod flags;
-mod mailboxes;
-mod messages;
-mod search;
-mod smtp_out;
-mod user_config;
+pub mod auth;
+pub mod commands;
+pub mod defs;
+pub mod fetch;
+pub mod flags;
+pub mod mailboxes;
+pub mod messages;
+pub mod search;
+pub mod smtp_out;
+pub mod user_config;
 
 pub use self::defs::CommandProcessor;

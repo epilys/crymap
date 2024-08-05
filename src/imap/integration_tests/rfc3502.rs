@@ -24,12 +24,12 @@ use crate::support::chronox::*;
 use crate::test_data::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("3502capa", "MULTIAPPEND");
 }
 
 #[test]
-fn happy_paths() {
+pub fn happy_paths() {
     let setup = set_up();
     let mut client = setup.connect("3502hapy");
     quick_log_in(&mut client);
@@ -118,7 +118,7 @@ fn happy_paths() {
 }
 
 #[test]
-fn literal_plus_interaction() {
+pub fn literal_plus_interaction() {
     let setup = set_up();
     let mut client = setup.connect("3502lit+");
     quick_log_in(&mut client);
@@ -142,7 +142,7 @@ fn literal_plus_interaction() {
 }
 
 #[test]
-fn abort_on_zero() {
+pub fn abort_on_zero() {
     let setup = set_up();
     let mut client = setup.connect("3502abrt");
     quick_log_in(&mut client);
@@ -206,7 +206,7 @@ fn abort_on_zero() {
 }
 
 #[test]
-fn abort_on_over_length() {
+pub fn abort_on_over_length() {
     let setup = set_up();
     let mut client = setup.connect("3502maxl");
     quick_log_in(&mut client);
@@ -240,7 +240,7 @@ fn abort_on_over_length() {
 }
 
 #[test]
-fn syntax_errors_in_continuation() {
+pub fn syntax_errors_in_continuation() {
     let setup = set_up();
     let mut client = setup.connect("3502syne");
     quick_log_in(&mut client);

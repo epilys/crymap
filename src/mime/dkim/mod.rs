@@ -16,15 +16,15 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod canonicalisation;
-mod error;
-mod hash;
-mod header;
-mod sign;
-mod verify;
+pub mod canonicalisation;
+pub mod error;
+pub mod hash;
+pub mod header;
+pub mod sign;
+pub mod verify;
 
 #[cfg(test)]
-mod test_domain_keys;
+pub mod test_domain_keys;
 
 pub use canonicalisation::{
     BodyCanonicalisation, BodyCanonicaliser, Canonicalisation,
@@ -42,7 +42,7 @@ pub use sign::{KeyPair, Signer};
 pub use verify::{Outcome, TxtRecordEntry, VerificationEnvironment, Verifier};
 
 #[cfg(test)]
-fn split_message(message: &[u8]) -> (&[u8], &[u8]) {
+pub fn split_message(message: &[u8]) -> (&[u8], &[u8]) {
     let blank_line = memchr::memmem::find(message, b"\r\n\r\n")
         .expect("no CRLF-CRLF in message");
     (&message[..blank_line], &message[blank_line + 4..])

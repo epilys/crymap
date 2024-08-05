@@ -356,7 +356,7 @@ impl StatefulMailbox {
 }
 
 #[derive(Debug)]
-enum SingleFetchResponse {
+pub enum SingleFetchResponse {
     Fetched(Seqnum, Vec<FetchedItem>),
     NotModified,
     SilentExpunge,

@@ -21,7 +21,7 @@ use crate::account::model::Flag;
 use crate::support::error::Error;
 
 #[test]
-fn flag_crud() {
+pub fn flag_crud() {
     let setup = set_up();
     let mut client = setup.connect("3501flfc");
     quick_log_in(&mut client);
@@ -110,7 +110,7 @@ fn flag_crud() {
 }
 
 #[test]
-fn error_conditions() {
+pub fn error_conditions() {
     let setup = set_up();
     let mut client = setup.connect("3501flec");
     quick_log_in(&mut client);

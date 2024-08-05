@@ -25,12 +25,12 @@
 //! 1. Every operation is atomic unless otherwise noted.
 //! 2. The concept of a database transaction does not escape the storage layer.
 
-mod db_migrations;
-mod deliverydb;
-mod messages;
-mod metadb;
-mod sqlite_xex_vfs;
-mod types;
+pub mod db_migrations;
+pub mod deliverydb;
+pub mod messages;
+pub mod metadb;
+pub mod sqlite_xex_vfs;
+pub mod types;
 
 pub use deliverydb::Connection as DeliveryDb;
 pub use messages::MessageStore;

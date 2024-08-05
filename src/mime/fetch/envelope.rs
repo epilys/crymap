@@ -263,7 +263,7 @@ impl EnvelopeFetcher {
     }
 }
 
-fn to_envelope_address(mbox: header::Mailbox) -> EnvelopeAddress {
+pub fn to_envelope_address(mbox: header::Mailbox) -> EnvelopeAddress {
     EnvelopeAddress {
         name: Some(decode_phrase(mbox.name)).filter(|s| !s.is_empty()),
         routing: if mbox.addr.routing.is_empty() {

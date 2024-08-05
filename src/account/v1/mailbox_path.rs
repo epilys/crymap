@@ -649,7 +649,7 @@ pub fn parse_uid_validity(path: impl AsRef<Path>) -> Result<u32, Error> {
     u32::from_str_radix(&name[1..], 16).map_err(|_| Error::CorruptFileLayout)
 }
 
-fn gen_mailbox_id() -> String {
+pub fn gen_mailbox_id() -> String {
     // 15 bytes = 120 bits of entropy, roughly the same as a V4 UUID, but
     // shorter since we can use base64 encoding. This outputs a 20 character
     // string, and then we have the extra 1-character prefix for a total of 21

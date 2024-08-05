@@ -16,18 +16,18 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod bad;
-mod condstore_basics;
-mod condstore_enable;
-mod condstore_fetch;
-mod condstore_flags;
-mod condstore_search;
-mod condstore_status;
-mod qresync;
+pub mod bad;
+pub mod condstore_basics;
+pub mod condstore_enable;
+pub mod condstore_fetch;
+pub mod condstore_flags;
+pub mod condstore_search;
+pub mod condstore_status;
+pub mod qresync;
 
 use super::defs::*;
 
-fn extract_highest_modseq(responses: &[s::ResponseLine<'_>]) -> u64 {
+pub fn extract_highest_modseq(responses: &[s::ResponseLine<'_>]) -> u64 {
     has_untagged_response_matching! {
         s::Response::Cond(s::CondResponse {
             code: Some(s::RespTextCode::HighestModseq(mm)),

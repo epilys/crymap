@@ -20,13 +20,13 @@ use super::defs::*;
 use crate::support::error::Error;
 
 #[test]
-fn capabilities_declared() {
+pub fn capabilities_declared() {
     test_require_capability("6154capa", "SPECIAL-USE");
     test_require_capability("6514capa", "CREATE-SPECIAL-USE");
 }
 
 #[test]
-fn list_special_use() {
+pub fn list_special_use() {
     let setup = set_up();
     let mut client = setup.connect("6154list");
     quick_log_in(&mut client);
@@ -53,7 +53,7 @@ fn list_special_use() {
 }
 
 #[test]
-fn create_special_use() {
+pub fn create_special_use() {
     let setup = set_up();
     let mut client = setup.connect("6154crea");
     quick_log_in(&mut client);

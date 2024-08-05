@@ -360,7 +360,7 @@ impl<'a> fmt::Debug for ContentDisposition<'a> {
 }
 
 // RFC 5322 3.2.1 "quoted-pair", including the 8-bit clean "obsolete" syntax
-fn quoted_pair(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn quoted_pair(i: &[u8]) -> IResult<&[u8], &[u8]> {
     let (i, _) = tag(b"\\")(i)?;
     bytes::complete::take(1usize)(i)
 }
@@ -369,13 +369,13 @@ fn quoted_pair(i: &[u8]) -> IResult<&[u8], &[u8]> {
 // The formal syntax describes the folding syntax itself, but unfolding is
 // partially performed by a different mechanism, so we just treat the
 // line-ending characters as simple whitespace.
-fn fws(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn fws(i: &[u8]) -> IResult<&[u8], &[u8]> {
     let (i, _) = is_a(" \t\r\n")(i)?;
     Ok((i, b" "))
 }
 
 // RFC 5322 3.2.2 "Comment text".
-fn ctext(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn ctext(i: &[u8]) -> IResult<&[u8], &[u8]> {
     is_not("()\\ \t\r\n")(i)
 }
 
@@ -384,7 +384,7 @@ fn ctext(i: &[u8]) -> IResult<&[u8], &[u8]> {
 // which makes it a lot more complicated.
 // We don't recur to `comment` here because `comment` handles nesting
 // procedurally itself.
-fn ccontent(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn ccontent(i: &[u8]) -> IResult<&[u8], ()> {
     branch::alt((
         combinator::map(ctext, |_| ()),
         combinator::map(quoted_pair, |_| ()),
@@ -396,7 +396,7 @@ fn ccontent(i: &[u8]) -> IResult<&[u8], ()> {
 //
 // The implementation here is procedural with manual nesting counting instead
 // of recursive to ensure we never overflow the stack.
-fn comment(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn comment(i: &[u8]) -> IResult<&[u8], ()> {
     let enter_comment = tag(b"(");
     let (mut i, _) = enter_comment(i)?;
 
@@ -418,7 +418,7 @@ fn comment(i: &[u8]) -> IResult<&[u8], ()> {
 }
 
 // RFC 5322 3.2.2 "Comment or folding white space".
-fn cfws(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn cfws(i: &[u8]) -> IResult<&[u8], ()> {
     let (i, _) = multi::many1_count(branch::alt((
         comment,
         combinator::map(fws, |_| ()),
@@ -427,7 +427,7 @@ fn cfws(i: &[u8]) -> IResult<&[u8], ()> {
 }
 
 // Convenience for opt(cfws)
-fn ocfws(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn ocfws(i: &[u8]) -> IResult<&[u8], ()> {
     let (i, _) = combinator::opt(cfws)(i)?;
     Ok((i, ()))
 }
@@ -435,7 +435,7 @@ fn ocfws(i: &[u8]) -> IResult<&[u8], ()> {
 // RFC 5322 3.2.3 "Atom text"
 // Amended by RFC 6532 to include all non-ASCII characters
 #[allow(clippy::manual_range_contains)]
-fn atext(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn atext(i: &[u8]) -> IResult<&[u8], &[u8]> {
     bytes::complete::take_while1(|ch| {
         // RFC5322 ALPHA
         (ch >= b'A' && ch <= b'Z') ||
@@ -461,7 +461,7 @@ fn atext(i: &[u8]) -> IResult<&[u8], &[u8]> {
 }
 
 // RFC 5322 3.2.3 "Atom"
-fn atom(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn atom(i: &[u8]) -> IResult<&[u8], &[u8]> {
     sequence::delimited(ocfws, atext, ocfws)(i)
 }
 
@@ -486,12 +486,12 @@ fn dot_atom(i: &[u8]) -> IResult<&[u8], Vec<&[u8]>> {
 // The RFC describes the syntax as if FWS has its normal folding behaviour
 // between the quotes, but it doesn't, so we just treat the horizontal
 // whitespace as part of qtext.
-fn qtext(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn qtext(i: &[u8]) -> IResult<&[u8], &[u8]> {
     is_not("\\\"\r\n")(i)
 }
 
 // Whitespace in a quoted string which gets deleted by folding.
-fn qfws(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn qfws(i: &[u8]) -> IResult<&[u8], &[u8]> {
     let (i, _) = is_a("\r\n")(i)?;
     Ok((i, &[]))
 }
@@ -499,12 +499,12 @@ fn qfws(i: &[u8]) -> IResult<&[u8], &[u8]> {
 // RFC 5322 3.2.4 "Quoted [string] content
 // The original spec puts FWS in the quoted-string definition for some reason,
 // which would make it much more complex.
-fn qcontent(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn qcontent(i: &[u8]) -> IResult<&[u8], &[u8]> {
     branch::alt((qtext, quoted_pair, qfws))(i)
 }
 
 // RFC 5322 3.2.4 "Quoted string"
-fn quoted_string(i: &[u8]) -> IResult<&[u8], Cow<'_, [u8]>> {
+pub fn quoted_string(i: &[u8]) -> IResult<&[u8], Cow<'_, [u8]>> {
     sequence::delimited(
         sequence::pair(ocfws, tag(b"\"")),
         multi::fold_many0(
@@ -527,7 +527,7 @@ fn quoted_string(i: &[u8]) -> IResult<&[u8], Cow<'_, [u8]>> {
 //
 // The output includes a flag indicating whether the word may be subject to
 // word decoding if it occurs within a phrase.
-fn word(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
+pub fn word(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
     branch::alt((
         combinator::map(atom, |a| (true, Cow::Borrowed(a))),
         combinator::map(quoted_string, |s| (false, s)),
@@ -536,7 +536,7 @@ fn word(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
 
 // Not formally specified by RFC 5322, but part of the `obs-phrase` grammar.
 // Defined here as a separate element for simplicity.
-fn obs_dot(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
+pub fn obs_dot(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
     // Only need to handle CFWS at end since there is always a preceding token
     // that allows CFWS.
     sequence::terminated(
@@ -550,7 +550,7 @@ fn obs_dot(i: &[u8]) -> IResult<&[u8], (bool, Cow<'_, [u8]>)> {
 //
 // RFC 2047 amends "phrase" to apply encoded word handling to the constituent
 // words, but only those that were from atoms.
-fn phrase(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
+pub fn phrase(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     let (i, parts) = combinator::map(
         sequence::pair(word, multi::many0(branch::alt((word, obs_dot)))),
         |(head, mut tail)| {
@@ -591,7 +591,7 @@ fn phrase(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
 // syntax and RFC 6532 revision is considered, there is no syntax at all and it
 // is just a raw byte string, so there's nothing to define here.
 
-fn parse_u32_infallible(i: &[u8]) -> u32 {
+pub fn parse_u32_infallible(i: &[u8]) -> u32 {
     str::from_utf8(i).unwrap().parse::<u32>().unwrap()
 }
 
@@ -599,7 +599,7 @@ fn parse_u32_infallible(i: &[u8]) -> u32 {
 // In general, the obsolete forms allow CFWS between all terms, so we just
 // write that in the whole date/time definitions instead of the rather
 // arbitrary distribution the RFC uses.
-fn year(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn year(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(2, 4, character::is_digit),
         |s| {
@@ -620,7 +620,7 @@ static MONTH_NAMES: [&str; 12] = [
     "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",
     "nov", "dec",
 ];
-fn month(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn month(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map_opt(atext, |name| {
         str::from_utf8(name)
             .ok()
@@ -639,40 +639,40 @@ fn month(i: &[u8]) -> IResult<&[u8], u32> {
     })(i)
 }
 
-fn day(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn day(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(1, 2, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn date(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
+pub fn date(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
     let (i, d) = sequence::terminated(day, ocfws)(i)?;
     let (i, m) = sequence::terminated(month, ocfws)(i)?;
     let (i, y) = sequence::terminated(year, ocfws)(i)?;
     Ok((i, (y, m, d)))
 }
 
-fn two_digit(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn two_digit(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(2, 2, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn one_two_digit(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn one_two_digit(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(1, 2, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn time_colon(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn time_colon(i: &[u8]) -> IResult<&[u8], ()> {
     let (i, _) = sequence::tuple((ocfws, tag(b":"), ocfws))(i)?;
     Ok((i, ()))
 }
 
-fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
+pub fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
     sequence::terminated(
         sequence::tuple((
             // RFC 5322 does not permit the time elements to be single-digit,
@@ -690,7 +690,7 @@ fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
     )(i)
 }
 
-fn numeric_zone(i: &[u8]) -> IResult<&[u8], i32> {
+pub fn numeric_zone(i: &[u8]) -> IResult<&[u8], i32> {
     combinator::map(
         sequence::pair(
             branch::alt((tag(b"+"), tag(b"-"))),
@@ -722,7 +722,7 @@ static OBSOLETE_ZONES: &[(&str, i32)] = &[
     ("pst", -8 * 60),
 ];
 
-fn obsolete_zone(i: &[u8]) -> IResult<&[u8], i32> {
+pub fn obsolete_zone(i: &[u8]) -> IResult<&[u8], i32> {
     combinator::map(atext, |name| {
         str::from_utf8(name)
             .ok()
@@ -741,20 +741,20 @@ fn obsolete_zone(i: &[u8]) -> IResult<&[u8], i32> {
     })(i)
 }
 
-fn zone(i: &[u8]) -> IResult<&[u8], i32> {
+pub fn zone(i: &[u8]) -> IResult<&[u8], i32> {
     combinator::map(
         combinator::opt(branch::alt((numeric_zone, obsolete_zone))),
         |zone| zone.unwrap_or(0),
     )(i)
 }
 
-fn time(i: &[u8]) -> IResult<&[u8], ((u32, u32, u32), i32)> {
+pub fn time(i: &[u8]) -> IResult<&[u8], ((u32, u32, u32), i32)> {
     // time already allows a CFWS at the end so we don't need anything between
     // time and zone.
     sequence::terminated(sequence::pair(time_of_day, zone), ocfws)(i)
 }
 
-fn date_time(i: &[u8]) -> IResult<&[u8], Option<DateTime<FixedOffset>>> {
+pub fn date_time(i: &[u8]) -> IResult<&[u8], Option<DateTime<FixedOffset>>> {
     // We don't care what day of week it was
     let (i, _) = sequence::tuple((
         ocfws,
@@ -780,7 +780,7 @@ fn date_time(i: &[u8]) -> IResult<&[u8], Option<DateTime<FixedOffset>>> {
 // conforms to obs-local-part, so we just parse that.
 // Samples from the ENRON corpus frequently have consecutive dots, so we allow
 // the word to be totally empty.
-fn local_part(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
+pub fn local_part(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     combinator::map(
         sequence::tuple((
             // Need to parse leading dots in separately because
@@ -817,11 +817,11 @@ fn local_part(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     )(i)
 }
 
-fn local_leading_dots(i: &[u8]) -> IResult<&[u8], usize> {
+pub fn local_leading_dots(i: &[u8]) -> IResult<&[u8], usize> {
     multi::many0_count(sequence::pair(ocfws, local_separator))(i)
 }
 
-fn local_separator(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn local_separator(i: &[u8]) -> IResult<&[u8], &[u8]> {
     branch::alt((
         // Some agent (JavaMail?) would improperly quote (?) dots in email
         // addresses like this. It's unclear if it's supposed to have some
@@ -836,25 +836,25 @@ fn local_separator(i: &[u8]) -> IResult<&[u8], &[u8]> {
 }
 
 // RFC 5322 4.4 obsolete domain format
-fn obs_domain(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
+pub fn obs_domain(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     multi::separated_list1(tag(b"."), combinator::map(atom, Cow::Borrowed))(i)
 }
 
 // RFC 5322 3.4.1 domain name text
 // Amended by RFC 6532 to include all non-ASCII
-fn dtext(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn dtext(i: &[u8]) -> IResult<&[u8], &[u8]> {
     is_not("[]\\ \t\r\n")(i)
 }
 
 // RFC 5322 3.4.1 domain literal content
 // As with quoted strings, we move the FWS part into the content to simplify
 // the syntax definition.
-fn dcontent(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn dcontent(i: &[u8]) -> IResult<&[u8], &[u8]> {
     branch::alt((dtext, quoted_pair, fws))(i)
 }
 
 // RFC 5322 3.4.1 domain literal
-fn domain_literal(i: &[u8]) -> IResult<&[u8], Vec<u8>> {
+pub fn domain_literal(i: &[u8]) -> IResult<&[u8], Vec<u8>> {
     combinator::map(
         sequence::delimited(
             sequence::pair(ocfws, tag(b"[")),
@@ -877,7 +877,7 @@ fn domain_literal(i: &[u8]) -> IResult<&[u8], Vec<u8>> {
 
 // RFC 5322 3.4.1 domain
 // dot-atom is encompassed by obs_domain
-fn domain(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
+pub fn domain(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     branch::alt((
         obs_domain,
         combinator::map(domain_literal, |v| vec![Cow::Owned(v)]),
@@ -885,7 +885,7 @@ fn domain(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
 }
 
 // RFC 5322 3.4.1 address specification
-fn addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
+pub fn addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
     let (i, local) = local_part(i)?;
     let (i, domain) = sequence::preceded(tag(b"@"), domain)(i)?;
     Ok((
@@ -901,7 +901,7 @@ fn addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
 // A subset of the RFC5322 3.4.1 address specification which doesn't gobble
 // subsequent comments, used for parsing the ancient "foo@bar (Foo Bar)"
 // syntax.
-fn conservative_addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
+pub fn conservative_addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
     let (i, local) = sequence::preceded(
         ocfws,
         multi::separated_list1(
@@ -928,7 +928,7 @@ fn conservative_addr_spec(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
 }
 
 // Obsolete way of specifying the display name
-fn obs_display_name(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
+pub fn obs_display_name(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
     sequence::delimited(
         tag(b"("),
         phrase,
@@ -940,7 +940,7 @@ fn obs_display_name(i: &[u8]) -> IResult<&[u8], Vec<Cow<'_, [u8]>>> {
 // We could probably just discard all this, but the author of Dovecot
 // apparently felt --- even in 2007 --- that this is still important enough to
 // put in the IMAP compliance tester.
-fn obs_domain_list(i: &[u8]) -> IResult<&[u8], Vec<Vec<Cow<'_, [u8]>>>> {
+pub fn obs_domain_list(i: &[u8]) -> IResult<&[u8], Vec<Vec<Cow<'_, [u8]>>>> {
     multi::separated_list1(
         multi::many1_count(branch::alt((
             cfws,
@@ -952,7 +952,7 @@ fn obs_domain_list(i: &[u8]) -> IResult<&[u8], Vec<Vec<Cow<'_, [u8]>>>> {
 
 // RFC 5322 3.4 angle-delimited address, including the 4.4 obsolete routing
 // information.
-fn angle_addr(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
+pub fn angle_addr(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
     let (i, routing) = sequence::delimited(
         sequence::pair(ocfws, tag(b"<")),
         combinator::opt(sequence::terminated(obs_domain_list, tag(b":"))),
@@ -1001,7 +1001,7 @@ fn angle_addr(i: &[u8]) -> IResult<&[u8], AddrSpec<'_>> {
 }
 
 // RFC 5322 3.4 mailbox
-fn mailbox(i: &[u8]) -> IResult<&[u8], Mailbox<'_>> {
+pub fn mailbox(i: &[u8]) -> IResult<&[u8], Mailbox<'_>> {
     combinator::map(
         branch::alt((
             combinator::map(
@@ -1024,7 +1024,7 @@ fn mailbox(i: &[u8]) -> IResult<&[u8], Mailbox<'_>> {
 }
 
 // Used in obsolete list syntax
-fn obs_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn obs_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
     combinator::map(
         multi::many1_count(sequence::tuple((ocfws, tag(b","), ocfws))),
         |_| (),
@@ -1032,7 +1032,7 @@ fn obs_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
 }
 
 // RFC 5322 3.4 mailbox list, including 4.4 obsolete syntax
-fn mailbox_list(i: &[u8]) -> IResult<&[u8], Vec<Mailbox<'_>>> {
+pub fn mailbox_list(i: &[u8]) -> IResult<&[u8], Vec<Mailbox<'_>>> {
     sequence::delimited(
         combinator::opt(obs_list_delim),
         multi::separated_list1(obs_list_delim, mailbox),
@@ -1041,7 +1041,7 @@ fn mailbox_list(i: &[u8]) -> IResult<&[u8], Vec<Mailbox<'_>>> {
 }
 
 // RFC 5322 3.4 group
-fn group(i: &[u8]) -> IResult<&[u8], Group<'_>> {
+pub fn group(i: &[u8]) -> IResult<&[u8], Group<'_>> {
     let (i, name) = sequence::terminated(phrase, tag(b":"))(i)?;
     // RFC 5322 doesn't allow ; to be missing even in the obsolete syntax.
     // However, Mark Crispin mentioned the possibility of it being missing
@@ -1056,7 +1056,7 @@ fn group(i: &[u8]) -> IResult<&[u8], Group<'_>> {
     Ok((i, Group { name, boxes }))
 }
 
-fn obs_addr_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
+pub fn obs_addr_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
     combinator::map(
         multi::many1_count(sequence::tuple((ocfws, is_a(",;"), ocfws))),
         |_| (),
@@ -1064,7 +1064,7 @@ fn obs_addr_list_delim(i: &[u8]) -> IResult<&[u8], ()> {
 }
 
 // RFC 5322 3.4 address
-fn address(i: &[u8]) -> IResult<&[u8], Address<'_>> {
+pub fn address(i: &[u8]) -> IResult<&[u8], Address<'_>> {
     branch::alt((
         combinator::map(mailbox, Address::Mailbox),
         combinator::map(group, Address::Group),
@@ -1072,7 +1072,7 @@ fn address(i: &[u8]) -> IResult<&[u8], Address<'_>> {
 }
 
 // RFC 5322 3.4 address list, including 4.4 obsolete syntax
-fn address_list(i: &[u8]) -> IResult<&[u8], Vec<Address<'_>>> {
+pub fn address_list(i: &[u8]) -> IResult<&[u8], Vec<Address<'_>>> {
     sequence::delimited(
         combinator::opt(obs_addr_list_delim),
         multi::separated_list1(obs_addr_list_delim, address),
@@ -1090,19 +1090,19 @@ fn address_list(i: &[u8]) -> IResult<&[u8], Vec<Address<'_>>> {
 // RFC 2045 5.1 token
 // Why couldn't they just reuse the atom definition? This one is subtly
 // different.
-fn token(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn token(i: &[u8]) -> IResult<&[u8], &[u8]> {
     sequence::delimited(ocfws, is_not("()<>@,;:\\\"/[]?= \t\r\n"), ocfws)(i)
 }
 
 // RFC 2045 5.1 value
 // Basically RFC 822/2822/5322's "word", but with their special _token_
 // replacing _atom_. At least they kept the same definition for quoted_string.
-fn value(i: &[u8]) -> IResult<&[u8], Cow<'_, [u8]>> {
+pub fn value(i: &[u8]) -> IResult<&[u8], Cow<'_, [u8]>> {
     branch::alt((combinator::map(token, Cow::Borrowed), quoted_string))(i)
 }
 
 // RFC 2045 5.1 type parameter
-fn content_type_parm(
+pub fn content_type_parm(
     i: &[u8],
 ) -> IResult<&[u8], (Cow<'_, [u8]>, Cow<'_, [u8]>)> {
     // Due the critcality of parsing Content-Type, if we can't parse the proper
@@ -1121,7 +1121,7 @@ fn content_type_parm(
 }
 
 // RFC 2045 5.1 Content-Type
-fn content_type(i: &[u8]) -> IResult<&[u8], ContentType<'_>> {
+pub fn content_type(i: &[u8]) -> IResult<&[u8], ContentType<'_>> {
     let (i, typ) = token(i)?;
     let (i, subtyp) = sequence::preceded(tag(b"/"), token)(i)?;
     let (i, parms) =
@@ -1140,7 +1140,7 @@ fn content_type(i: &[u8]) -> IResult<&[u8], ContentType<'_>> {
 // Ultimately, we don't care much about the parameter name/values, and IMAP
 // doesn't require us to do anything other than spit them at the client if it
 // asks for them.
-fn content_disposition(i: &[u8]) -> IResult<&[u8], ContentDisposition<'_>> {
+pub fn content_disposition(i: &[u8]) -> IResult<&[u8], ContentDisposition<'_>> {
     let (i, disposition) = token(i)?;
     let (i, parms) =
         multi::many0(sequence::preceded(tag(b";"), content_type_parm))(i)?;

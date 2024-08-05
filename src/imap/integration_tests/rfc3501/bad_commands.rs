@@ -19,7 +19,7 @@
 use super::super::defs::*;
 
 #[test]
-fn unknown_commands() {
+pub fn unknown_commands() {
     let setup = set_up();
     let mut client = setup.connect("3501bcuc");
     // Log in so that long-line recovery is enabled.
@@ -137,7 +137,7 @@ fn unknown_commands() {
 }
 
 #[test]
-fn inappropriate_commands() {
+pub fn inappropriate_commands() {
     let setup = set_up();
     let mut client = setup.connect("3501bcic");
     skip_greeting(&mut client);
@@ -172,7 +172,7 @@ fn inappropriate_commands() {
 }
 
 #[test]
-fn bad_append_recovery() {
+pub fn bad_append_recovery() {
     let setup = set_up();
     let mut client = setup.connect("3501bcar");
     quick_log_in(&mut client);
@@ -224,7 +224,7 @@ fn bad_append_recovery() {
 }
 
 #[test]
-fn connection_closed_after_too_many_unauthed_commands() {
+pub fn connection_closed_after_too_many_unauthed_commands() {
     let setup = set_up();
     let mut client = setup.connect("3501ccuc");
     skip_greeting(&mut client);

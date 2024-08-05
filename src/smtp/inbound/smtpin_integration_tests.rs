@@ -58,12 +58,12 @@ lazy_static! {
         openssl::pkey::PKey::generate_ed25519().unwrap();
 }
 
-struct Setup {
+pub struct Setup {
     system_dir: TempDir,
     master_key: Arc<MasterKey>,
 }
 
-fn set_up() -> Arc<Setup> {
+pub fn set_up() -> Arc<Setup> {
     crate::init_test_log();
 
     let mut lock = SYSTEM_DIR.lock().unwrap();
@@ -77,7 +77,7 @@ fn set_up() -> Arc<Setup> {
     setup
 }
 
-fn set_up_new_root() -> Setup {
+pub fn set_up_new_root() -> Setup {
     let system_dir = TempDir::new().unwrap();
     let master_key = Arc::new(MasterKey::new());
 
@@ -216,7 +216,7 @@ async fn run_server(
 }
 
 /// Fetch the email which contains the given string.
-fn fetch_email(setup: &Setup, account_name: &str, key: &str) -> Option<String> {
+pub fn fetch_email(setup: &Setup, account_name: &str, key: &str) -> Option<String> {
     let mut account = Account::new(
         LogPrefix::new("verify".to_owned()),
         setup.system_dir.path().join(account_name),
@@ -259,7 +259,7 @@ fn fetch_email(setup: &Setup, account_name: &str, key: &str) -> Option<String> {
 }
 
 #[test]
-fn helo() {
+pub fn helo() {
     let setup = set_up();
     let mut cxn = setup.connect("helo", false);
 
@@ -292,7 +292,7 @@ fn helo() {
 }
 
 #[test]
-fn ehlo() {
+pub fn ehlo() {
     let setup = set_up();
     let mut cxn = setup.connect("ehlo", false);
 
@@ -328,7 +328,7 @@ fn ehlo() {
 }
 
 #[test]
-fn misc_commands() {
+pub fn misc_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("misc_commands", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -343,7 +343,7 @@ fn misc_commands() {
 }
 
 #[test]
-fn wrong_greeting() {
+pub fn wrong_greeting() {
     let setup = set_up();
     let mut cxn = setup.connect("wrong_greeting", false);
 
@@ -352,7 +352,7 @@ fn wrong_greeting() {
 }
 
 #[test]
-fn binary_command() {
+pub fn binary_command() {
     let setup = set_up();
     let mut cxn = setup.connect("binary_command", false);
     cxn.read_responses();
@@ -361,7 +361,7 @@ fn binary_command() {
 }
 
 #[test]
-fn relay_explicitly_rejected() {
+pub fn relay_explicitly_rejected() {
     let setup = set_up();
     let mut cxn = setup.connect("relay_explicitly_rejected", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -370,7 +370,7 @@ fn relay_explicitly_rejected() {
 }
 
 #[test]
-fn bad_recipient() {
+pub fn bad_recipient() {
     let setup = set_up();
     let mut cxn = setup.connect("bad_recipient", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -382,7 +382,7 @@ fn bad_recipient() {
 }
 
 #[test]
-fn too_many_recipients() {
+pub fn too_many_recipients() {
     let setup = set_up();
     let mut cxn = setup.connect("too_many_recipients", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -402,7 +402,7 @@ fn too_many_recipients() {
 }
 
 #[test]
-fn too_many_ineffectual_commands() {
+pub fn too_many_ineffectual_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("too_many_recipients", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -420,7 +420,7 @@ fn too_many_ineffectual_commands() {
 }
 
 #[test]
-fn minimal_mail_delivery() {
+pub fn minimal_mail_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("minimal_mail_delivery", false);
     cxn.skip_pleasantries("HELO 192.0.2.3");
@@ -449,7 +449,7 @@ fn minimal_mail_delivery() {
 }
 
 #[test]
-fn slow_mail_delivery() {
+pub fn slow_mail_delivery() {
     fn delay() {
         std::thread::sleep(std::time::Duration::from_millis(100));
     }
@@ -485,7 +485,7 @@ fn slow_mail_delivery() {
 }
 
 #[test]
-fn pipelined_mail_delivery() {
+pub fn pipelined_mail_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("pipelined_mail_delivery", false);
     cxn.write_line(
@@ -512,7 +512,7 @@ fn pipelined_mail_delivery() {
 }
 
 #[test]
-fn multi_mail_delivery() {
+pub fn multi_mail_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("multi_mail_delivery", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -543,7 +543,7 @@ fn multi_mail_delivery() {
 }
 
 #[test]
-fn huge_headers_via_data() {
+pub fn huge_headers_via_data() {
     let setup = set_up();
     let mut cxn = setup.connect("huge_headers_via_data", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -566,7 +566,7 @@ fn huge_headers_via_data() {
 }
 
 #[test]
-fn endless_headers_via_bdat() {
+pub fn endless_headers_via_bdat() {
     let setup = set_up();
     let mut cxn = setup.connect("endless_headers_via_data", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -597,7 +597,7 @@ fn endless_headers_via_bdat() {
 }
 
 #[test]
-fn bodiless_message() {
+pub fn bodiless_message() {
     let setup = set_up();
     let mut cxn = setup.connect("bodiless_message", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -618,7 +618,7 @@ fn bodiless_message() {
 }
 
 #[test]
-fn oversized_message_via_data() {
+pub fn oversized_message_via_data() {
     let setup = set_up();
     let mut cxn = setup.connect("oversized_message_via_data", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -645,7 +645,7 @@ fn oversized_message_via_data() {
 }
 
 #[test]
-fn oversized_message_via_small_bdats() {
+pub fn oversized_message_via_small_bdats() {
     let setup = set_up();
     let mut cxn = setup.connect("oversized_message_via_small_bdats", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -689,7 +689,7 @@ fn oversized_message_via_small_bdats() {
 }
 
 #[test]
-fn oversized_message_via_huge_bdat() {
+pub fn oversized_message_via_huge_bdat() {
     let setup = set_up();
     let mut cxn = setup.connect("oversized_message_via_huge_bdat", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -725,7 +725,7 @@ fn oversized_message_via_huge_bdat() {
 }
 
 #[test]
-fn no_from_header() {
+pub fn no_from_header() {
     let setup = set_up();
     let mut cxn = setup.connect("no_from_header", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -749,7 +749,7 @@ fn no_from_header() {
 }
 
 #[test]
-fn two_from_headers() {
+pub fn two_from_headers() {
     let setup = set_up();
     let mut cxn = setup.connect("two_from_headers", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -773,7 +773,7 @@ fn two_from_headers() {
 }
 
 #[test]
-fn bad_from_header() {
+pub fn bad_from_header() {
     let setup = set_up();
     let mut cxn = setup.connect("bad_from_header", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -796,7 +796,7 @@ fn bad_from_header() {
 }
 
 #[test]
-fn dmarc_accept_small() {
+pub fn dmarc_accept_small() {
     let setup = set_up();
     let mut cxn = setup.connect("dmarc_accept_small", false);
     cxn.skip_pleasantries("HELO mail.mars.com");
@@ -834,7 +834,7 @@ fn dmarc_accept_small() {
 }
 
 #[test]
-fn dmarc_accept_large_body() {
+pub fn dmarc_accept_large_body() {
     let setup = set_up();
     let mut cxn = setup.connect("dmarc_accept_large_body", false);
     cxn.skip_pleasantries("HELO mail.mars.com");
@@ -873,7 +873,7 @@ fn dmarc_accept_large_body() {
 }
 
 #[test]
-fn dmarc_reject_corrupted_body() {
+pub fn dmarc_reject_corrupted_body() {
     let setup = set_up();
     let mut cxn = setup.connect("dmarc_reject_corrupted_body", false);
     cxn.skip_pleasantries("HELO mail.mars.com");
@@ -907,7 +907,7 @@ fn dmarc_reject_corrupted_body() {
 }
 
 #[test]
-fn dmarc_reject_wrong_spf_domain() {
+pub fn dmarc_reject_wrong_spf_domain() {
     let setup = set_up();
     let mut cxn = setup.connect("dmarc_reject_wrong_spf_domain", false);
     cxn.skip_pleasantries("HELO mail.mars.com");
@@ -943,7 +943,7 @@ fn dmarc_reject_wrong_spf_domain() {
 }
 
 #[test]
-fn dmarc_reject_spf_failure() {
+pub fn dmarc_reject_spf_failure() {
     let setup = set_up();
     let mut cxn = setup.connect("dmarc_reject_spf_failure", false);
     cxn.skip_pleasantries("HELO mail.venus.com");
@@ -977,7 +977,7 @@ fn dmarc_reject_spf_failure() {
 }
 
 #[test]
-fn delivery_total_failure() {
+pub fn delivery_total_failure() {
     let setup = set_up();
     let mut cxn = setup.connect("delivery_total_failure", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -1002,7 +1002,7 @@ fn delivery_total_failure() {
 }
 
 #[test]
-fn delivery_partial_failure() {
+pub fn delivery_partial_failure() {
     let setup = set_up();
     let mut cxn = setup.connect("delivery_total_failure", false);
     cxn.skip_pleasantries("HELO mail.earth.com");
@@ -1030,7 +1030,7 @@ fn delivery_partial_failure() {
 }
 
 #[test]
-fn out_of_order_commands() {
+pub fn out_of_order_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("out_of_order_commands", false);
     cxn.read_responses(); // Skip greeting
@@ -1101,7 +1101,7 @@ fn out_of_order_commands() {
 }
 
 #[test]
-fn start_tls() {
+pub fn start_tls() {
     let setup = set_up();
     let mut cxn = setup.connect("start_tls", false);
     cxn.skip_pleasantries("HELO 192.0.2.3");
@@ -1134,7 +1134,7 @@ fn start_tls() {
 
 #[test]
 #[cfg(feature = "live-network-tests")]
-fn live_test() {
+pub fn live_test() {
     let setup = set_up();
     let mut cxn = setup.connect("live_test", true);
     // In the test build, smtpin.spftest.lin.gl is special-cased to be an

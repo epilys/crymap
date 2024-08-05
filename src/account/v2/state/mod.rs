@@ -24,25 +24,25 @@
 //! whose very large implementation is split across multiple files for
 //! manageability.
 
-mod defs;
-mod delivery;
-mod expunge;
-mod fetch;
-mod flags;
-mod idle;
-mod init;
-mod mailboxes;
-mod maintenance;
-mod messages;
-mod migration;
-mod poll;
-mod search;
-mod select;
-mod spool;
-mod user_config;
+pub mod defs;
+pub mod delivery;
+pub mod expunge;
+pub mod fetch;
+pub mod flags;
+pub mod idle;
+pub mod init;
+pub mod mailboxes;
+pub mod maintenance;
+pub mod messages;
+pub mod migration;
+pub mod poll;
+pub mod search;
+pub mod select;
+pub mod spool;
+pub mod user_config;
 
 #[cfg(feature = "dev-tools")]
-mod zstd_train;
+pub mod zstd_train;
 
 pub use defs::{Account, Mailbox};
 pub use delivery::DeliveryAccount;

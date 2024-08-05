@@ -272,13 +272,13 @@ pub fn assume_user_privileges(
     Ok(())
 }
 
-fn chroot(chroot_dir: &Path) -> nix::Result<()> {
+pub fn chroot(chroot_dir: &Path) -> nix::Result<()> {
     prepare_chroot(chroot_dir);
     // chroot first in case chroot_dir is relative.
     nix::unistd::chroot(chroot_dir).and_then(|()| nix::unistd::chdir("/"))
 }
 
-fn prepare_chroot(chroot_dir: &Path) {
+pub fn prepare_chroot(chroot_dir: &Path) {
     // OpenSSL will want to look into its own files after we chroot if we end
     // up doing outbound SMTP, so make sure the files it wants are actually
     // available in the chroot.
@@ -308,7 +308,7 @@ fn prepare_chroot(chroot_dir: &Path) {
 }
 
 /// Retrieves the OPENSSL directory, *relative* to the root of the FS.
-fn get_openssldir() -> Option<&'static Path> {
+pub fn get_openssldir() -> Option<&'static Path> {
     // This is, apparently, the only way to get any inkling of where OpenSSL
     // plans on looking for files. For whatever reason, it's in some
     // human-readable format that we then need to parse.
@@ -322,7 +322,7 @@ fn get_openssldir() -> Option<&'static Path> {
 
 /// Parses the string produced by `openssl::version::dir` to produce a path,
 /// *relative* to the root of the FS, of the OpenSSL directory.
-fn parse_openssldir(s: &str) -> Option<&Path> {
+pub fn parse_openssldir(s: &str) -> Option<&Path> {
     s.split('"')
         .nth(1)
         .map(|s| s.strip_prefix('/').unwrap_or(s).as_ref())

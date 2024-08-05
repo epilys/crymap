@@ -33,7 +33,7 @@ pub struct Signer<'a> {
     subs: Vec<SubSigner<'a>>,
 }
 
-struct SubSigner<'a> {
+pub struct SubSigner<'a> {
     header: Header<'a>,
     hasher: hash::BodyHasher,
     key: &'a KeyPair,

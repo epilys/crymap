@@ -22,9 +22,9 @@
 //! Unversioned submodules are not storage-implementation-specific.
 
 pub mod key_store;
-mod message_format;
+pub mod message_format;
 pub mod model;
-mod search_backend;
+pub mod search_backend;
 
-mod v1;
+pub mod v1;
 pub mod v2;

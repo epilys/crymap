@@ -25,7 +25,7 @@ pub mod search;
 pub mod section;
 pub mod simple;
 
-mod strings;
+pub mod strings;
 
 #[cfg(feature = "dev-tools")]
 pub mod zstd_train;

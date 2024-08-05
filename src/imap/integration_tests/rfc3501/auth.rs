@@ -21,7 +21,7 @@ use std::borrow::Cow;
 use super::super::defs::*;
 
 #[test]
-fn login_basic() {
+pub fn login_basic() {
     let setup = set_up();
     let mut client = setup.connect("3501aulb");
     skip_greeting(&mut client);
@@ -50,7 +50,7 @@ fn login_basic() {
 }
 
 #[test]
-fn login_invalid() {
+pub fn login_invalid() {
     let setup = set_up();
     let mut client = setup.connect("3501auli");
     skip_greeting(&mut client);
@@ -85,7 +85,7 @@ fn login_invalid() {
 }
 
 #[test]
-fn authenticate_plain() {
+pub fn authenticate_plain() {
     let setup = set_up();
     let mut client = setup.connect("3501auap");
     skip_greeting(&mut client);
@@ -127,7 +127,7 @@ fn authenticate_plain() {
 }
 
 #[test]
-fn authenticate_invalid() {
+pub fn authenticate_invalid() {
     let setup = set_up();
     let mut client = setup.connect("3501auai");
     skip_greeting(&mut client);
@@ -228,7 +228,7 @@ fn authenticate_invalid() {
 }
 
 #[test]
-fn authenticate_unsupported() {
+pub fn authenticate_unsupported() {
     let setup = set_up();
     let mut client = setup.connect("3501auau");
     skip_greeting(&mut client);

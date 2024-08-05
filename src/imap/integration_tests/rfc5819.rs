@@ -21,12 +21,12 @@ use std::borrow::Cow;
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("5819capa", "LIST-STATUS");
 }
 
 #[test]
-fn test_list_status() {
+pub fn test_list_status() {
     let setup = set_up();
     let mut client = setup.connect("5819lsst");
     quick_log_in(&mut client);

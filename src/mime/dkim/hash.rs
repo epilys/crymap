@@ -195,7 +195,7 @@ impl Write for BodyHasher {
 /// Note that the body size is determined *after* canonicalisation, so the size
 /// limit needs to be here (within the `BodyCanonicaliser`) and not at a higher
 /// level.
-struct DigestWriter {
+pub struct DigestWriter {
     digest: Result<openssl::hash::Hasher, openssl::error::ErrorStack>,
     limit: u64,
     bytes_written: u64,

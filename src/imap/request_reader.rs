@@ -586,7 +586,7 @@ impl<R: AsyncRead + Unpin> RequestReader<R> {
 }
 
 #[derive(Clone, Copy)]
-enum OverflowState {
+pub enum OverflowState {
     /// `text` is full with no EOL in sight.
     Line,
     /// The consumed part of `text` ends with a LITERAL+ literal start of this
@@ -633,7 +633,7 @@ impl<R: AsyncRead + Unpin> AsyncRead for RequestReader<R> {
 /// `compressed` is the staging buffer for compressed data, with
 /// `compressed_range` being the range of `compressed` which has unprocessed
 /// data.
-fn poll_decompress<R: AsyncRead>(
+pub fn poll_decompress<R: AsyncRead>(
     ctx: &mut task::Context<'_>,
     dst: &mut ReadBuf<'_>,
     mut src: Pin<&mut R>,

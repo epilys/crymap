@@ -94,7 +94,7 @@ pub async fn execute(
 const MAX_LINE: usize = 1024;
 const COMMAND_TIMEOUT: Duration = Duration::from_secs(30);
 
-struct Transaction<'a, 'b> {
+pub struct Transaction<'a, 'b> {
     cxn: ServerIo,
     transcript: &'a mut Transcript,
     message: SpooledMessage,
@@ -110,7 +110,7 @@ struct Transaction<'a, 'b> {
 }
 
 #[derive(Clone, Copy, Default)]
-struct Capabilities {
+pub struct Capabilities {
     starttls: bool,
     binary: bool,
     chunking: bool,
@@ -655,13 +655,13 @@ impl Transaction<'_, '_> {
     }
 }
 
-struct ParsedLine<'a> {
-    status: u32,
-    last: bool,
-    comment: &'a str,
+pub struct ParsedLine<'a> {
+    pub status: u32,
+    pub last: bool,
+    pub comment: &'a str,
 }
 
-fn parse_line(s: &str) -> Option<ParsedLine<'_>> {
+pub fn parse_line(s: &str) -> Option<ParsedLine<'_>> {
     let s = s.trim_end_matches(['\r', '\n']);
     let status = s.get(0..3)?;
     let last = s.get(3..4)?;
@@ -681,7 +681,7 @@ fn parse_line(s: &str) -> Option<ParsedLine<'_>> {
     })
 }
 
-fn unexpected_ssl_error(err: openssl::error::ErrorStack) -> Error {
+pub fn unexpected_ssl_error(err: openssl::error::ErrorStack) -> Error {
     error!("unexpected SSL error: {err}");
     Error::TotalFailure
 }

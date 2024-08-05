@@ -26,7 +26,7 @@ use crate::support::chronox::*;
 use crate::test_data::*;
 
 #[test]
-fn fetch_single_scalars() {
+pub fn fetch_single_scalars() {
     let setup = set_up();
     let mut client = setup.connect("3501fess");
     quick_log_in(&mut client);
@@ -70,7 +70,7 @@ fn fetch_single_scalars() {
 }
 
 #[test]
-fn fetch_envelope() {
+pub fn fetch_envelope() {
     let setup = set_up();
     let mut client = setup.connect("3501feev");
     quick_log_in(&mut client);
@@ -189,7 +189,7 @@ fn fetch_envelope() {
 }
 
 #[test]
-fn fetch_envelope_with_obsolete_routes() {
+pub fn fetch_envelope_with_obsolete_routes() {
     let setup = set_up();
     let mut client = setup.connect("3501feor");
     quick_log_in(&mut client);
@@ -233,7 +233,7 @@ fn fetch_envelope_with_obsolete_routes() {
 }
 
 #[test]
-fn fetch_body_structure() {
+pub fn fetch_body_structure() {
     let setup = set_up();
     let mut client = setup.connect("3501febs");
     quick_log_in(&mut client);
@@ -272,7 +272,7 @@ fn fetch_body_structure() {
     });
 }
 
-fn check_christmass_tree_body_structure(bs: &s::Body<'_>, extended: bool) {
+pub fn check_christmass_tree_body_structure(bs: &s::Body<'_>, extended: bool) {
     let bs = match *bs {
         s::Body::SinglePart(ref bs) => bs,
         ref bs => panic!("Unexpected top-level body structure: {:#?}", bs),
@@ -323,7 +323,7 @@ fn check_christmass_tree_body_structure(bs: &s::Body<'_>, extended: bool) {
     }
 }
 
-fn check_torture_test_body_structure(bs: &s::Body<'_>, extended: bool) {
+pub fn check_torture_test_body_structure(bs: &s::Body<'_>, extended: bool) {
     // We don't check the whole body structure here. The more thorough test is
     // done by the tests in `bodystructure.rs`. The purpose of this test is to
     // ensure that the correct fields are assigned the correct values in the
@@ -494,7 +494,7 @@ fn check_torture_test_body_structure(bs: &s::Body<'_>, extended: bool) {
 }
 
 #[test]
-fn fetch_body_structure_unknown_cte() {
+pub fn fetch_body_structure_unknown_cte() {
     let setup = set_up();
     let mut client = setup.connect("3501feuc");
     quick_log_in(&mut client);
@@ -526,7 +526,7 @@ fn fetch_body_structure_unknown_cte() {
 }
 
 #[test]
-fn fetch_body_parts() {
+pub fn fetch_body_parts() {
     let setup = set_up();
     let mut client = setup.connect("3501febp");
     quick_log_in(&mut client);
@@ -808,7 +808,7 @@ fn fetch_body_parts() {
 }
 
 #[test]
-fn implicit_seen() {
+pub fn implicit_seen() {
     let setup = set_up();
     let mut client = setup.connect("3501feis");
     quick_log_in(&mut client);
@@ -880,7 +880,7 @@ fn implicit_seen() {
 }
 
 #[test]
-fn error_conditions() {
+pub fn error_conditions() {
     // Using a unique account so that XCRY PURGE doesn't interfere with other
     // tests.
     let setup = set_up_new_root();
@@ -951,7 +951,7 @@ fn error_conditions() {
 }
 
 #[test]
-fn wrapped_headers_not_mangled() {
+pub fn wrapped_headers_not_mangled() {
     let setup = set_up();
     let mut client = setup.connect("3501fehm");
     quick_log_in(&mut client);

@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod codes;
-mod syntax;
+pub mod codes;
+pub mod syntax;
 
 pub mod dmarc;
 pub mod inbound;

@@ -39,7 +39,7 @@ use crate::{
 };
 
 #[derive(Default)]
-struct OverallResults {
+pub struct OverallResults {
     success: Vec<String>,
     tempfail: Vec<String>,
     permfail: Vec<String>,
@@ -232,7 +232,7 @@ impl OverallResults {
     }
 }
 
-fn extract_raw_subject(reader: impl io::BufRead) -> io::Result<String> {
+pub fn extract_raw_subject(reader: impl io::BufRead) -> io::Result<String> {
     let mut reader = reader.take(65536);
     let mut header_block = Vec::<u8>::new();
     while !header_block.ends_with(b"\n\n") && !header_block.ends_with(b"\n\r\n")
@@ -256,7 +256,7 @@ fn extract_raw_subject(reader: impl io::BufRead) -> io::Result<String> {
     Ok(subject)
 }
 
-fn generate_receipt(
+pub fn generate_receipt(
     common_paths: Arc<CommonPaths>,
     user_name: &str,
     local_host_name: &str,

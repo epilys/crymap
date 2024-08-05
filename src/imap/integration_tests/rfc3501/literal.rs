@@ -21,7 +21,7 @@ use super::super::defs::*;
 // This doesn't test APPEND with synchronising literals since all the tests
 // that append messages already use it.
 #[test]
-fn command_synchronising_literals() {
+pub fn command_synchronising_literals() {
     let setup = set_up();
     let mut client = setup.connect("3501lics");
     quick_log_in(&mut client);

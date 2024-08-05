@@ -22,12 +22,12 @@ use crate::support::error::Error;
 use crate::test_data::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("3516capa", "BINARY");
 }
 
 #[test]
-fn binary_append() {
+pub fn binary_append() {
     let setup = set_up();
     let mut client = setup.connect("3516bapp");
     quick_log_in(&mut client);
@@ -56,7 +56,7 @@ fn binary_append() {
 }
 
 #[test]
-fn fetch_binary_content() {
+pub fn fetch_binary_content() {
     let setup = set_up();
     let mut client = setup.connect("3516fetc");
     quick_log_in(&mut client);
@@ -223,7 +223,7 @@ fn fetch_binary_content() {
 }
 
 #[test]
-fn fetch_unknown_cte() {
+pub fn fetch_unknown_cte() {
     let setup = set_up();
     let mut client = setup.connect("3516ucte");
     quick_log_in(&mut client);
@@ -247,7 +247,7 @@ fn fetch_unknown_cte() {
 }
 
 #[test]
-fn implicit_seen_on_fetch() {
+pub fn implicit_seen_on_fetch() {
     let setup = set_up();
     let mut client = setup.connect("3516seen");
     quick_log_in(&mut client);

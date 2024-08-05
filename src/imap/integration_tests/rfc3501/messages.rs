@@ -22,7 +22,7 @@ use crate::support::error::Error;
 use crate::test_data::*;
 
 #[test]
-fn append_message() {
+pub fn append_message() {
     let setup = set_up();
     let mut client = setup.connect("3501meam");
     quick_log_in(&mut client);
@@ -64,7 +64,7 @@ fn append_message() {
 }
 
 #[test]
-fn append_with_new_flag() {
+pub fn append_with_new_flag() {
     let setup = set_up();
     let mut client = setup.connect("3501meaf");
     quick_log_in(&mut client);
@@ -95,7 +95,7 @@ fn append_with_new_flag() {
 }
 
 #[test]
-fn copy_messages() {
+pub fn copy_messages() {
     let setup = set_up();
     let mut client = setup.connect("3501mecm");
     quick_log_in(&mut client);
@@ -127,7 +127,7 @@ fn copy_messages() {
 }
 
 #[test]
-fn expunge_messages() {
+pub fn expunge_messages() {
     let setup = set_up();
     let mut client = setup.connect("3501mexm");
     quick_log_in(&mut client);
@@ -145,7 +145,7 @@ fn expunge_messages() {
 }
 
 #[test]
-fn append_copy_nx_destination() {
+pub fn append_copy_nx_destination() {
     let setup = set_up();
     let mut client = setup.connect("3501meac");
     quick_log_in(&mut client);
@@ -212,7 +212,7 @@ fn append_copy_nx_destination() {
 }
 
 #[test]
-fn copy_expunged() {
+pub fn copy_expunged() {
     let setup = set_up();
     let mut client = setup.connect("3501mecx");
     quick_log_in(&mut client);
@@ -234,7 +234,7 @@ fn copy_expunged() {
 }
 
 #[test]
-fn error_conditions() {
+pub fn error_conditions() {
     let setup = set_up();
     let mut client = setup.connect("3501meec");
     quick_log_in(&mut client);

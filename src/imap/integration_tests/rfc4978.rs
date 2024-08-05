@@ -22,12 +22,12 @@ use super::defs::*;
 use crate::test_data::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("4978capa", "COMPRESS=DEFLATE");
 }
 
 #[test]
-fn compress() {
+pub fn compress() {
     let setup = set_up();
     let mut client = setup.connect("4978comp");
 
@@ -53,7 +53,7 @@ fn compress() {
 }
 
 #[test]
-fn pipelined_append() {
+pub fn pipelined_append() {
     let setup = set_up();
     let mut client = setup.connect("4978pipe");
 

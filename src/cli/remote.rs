@@ -32,7 +32,7 @@ use crate::{
 type RemoteClient = Client<Box<dyn BufRead>, Box<dyn Write>>;
 
 #[derive(Error, Debug)]
-enum Error {
+pub enum Error {
     #[error(transparent)]
     Io(#[from] io::Error),
     #[error(transparent)]
@@ -49,7 +49,7 @@ pub(super) fn main(cmd: RemoteSubcommand) {
     }
 }
 
-fn main_impl(mut cmd: RemoteSubcommand) -> Result<(), Error> {
+pub fn main_impl(mut cmd: RemoteSubcommand) -> Result<(), Error> {
     let mut client = connect(cmd.common_options())?;
 
     match cmd {
@@ -81,7 +81,7 @@ fn main_impl(mut cmd: RemoteSubcommand) -> Result<(), Error> {
     Ok(())
 }
 
-fn connect(options: RemoteCommonOptions) -> Result<RemoteClient, Error> {
+pub fn connect(options: RemoteCommonOptions) -> Result<RemoteClient, Error> {
     let user = match options.user {
         Some(user) => user,
         None => match nix::unistd::User::from_uid(nix::unistd::getuid()) {
@@ -171,7 +171,7 @@ fn connect(options: RemoteCommonOptions) -> Result<RemoteClient, Error> {
     Ok(client)
 }
 
-fn check_capabilities(
+pub fn check_capabilities(
     client: &mut RemoteClient,
     required: &[&str],
 ) -> Result<(), Error> {
@@ -198,7 +198,7 @@ fn check_capabilities(
     die!(EX_PROTOCOL, "Missing CAPABILITY response")
 }
 
-fn die_if_not_success(what: &str, response: s::ResponseLine<'_>) {
+pub fn die_if_not_success(what: &str, response: s::ResponseLine<'_>) {
     match response.response {
         s::Response::Cond(s::CondResponse {
             cond: s::RespCondType::Ok,
@@ -224,7 +224,7 @@ fn die_if_not_success(what: &str, response: s::ResponseLine<'_>) {
     }
 }
 
-fn change_password(client: &mut RemoteClient) -> Result<(), Error> {
+pub fn change_password(client: &mut RemoteClient) -> Result<(), Error> {
     let new_password = loop {
         match rpassword::prompt_password("New password: ").and_then(|a| {
             rpassword::prompt_password("Confirm: ").map(|b| (a, b))
@@ -269,7 +269,7 @@ deleted on the next successful login 24 hours from now.",
     Ok(())
 }
 
-fn config(
+pub fn config(
     client: &mut RemoteClient,
     cmd: RemoteConfigSubcommand,
 ) -> Result<(), Error> {
@@ -377,7 +377,7 @@ fn config(
     Ok(())
 }
 
-fn require_configurable(
+pub fn require_configurable(
     current_config: &s::XCryUserConfigData<'_>,
     required: &str,
 ) {
@@ -394,7 +394,7 @@ fn require_configurable(
     );
 }
 
-fn list_foreign_smtp_tls(client: &mut RemoteClient) -> Result<(), Error> {
+pub fn list_foreign_smtp_tls(client: &mut RemoteClient) -> Result<(), Error> {
     require_smtp_out_support(client)?;
 
     let mut buffer = Vec::new();
@@ -436,7 +436,7 @@ fn list_foreign_smtp_tls(client: &mut RemoteClient) -> Result<(), Error> {
     Ok(())
 }
 
-fn delete_foreign_smtp_tls(
+pub fn delete_foreign_smtp_tls(
     client: &mut RemoteClient,
     domains: Vec<String>,
 ) -> Result<(), Error> {
@@ -457,7 +457,7 @@ fn delete_foreign_smtp_tls(
     Ok(())
 }
 
-fn retry_email(client: &mut RemoteClient, id: String) -> Result<(), Error> {
+pub fn retry_email(client: &mut RemoteClient, id: String) -> Result<(), Error> {
     require_smtp_out_support(client)?;
 
     let mut buffer = Vec::new();
@@ -469,7 +469,7 @@ fn retry_email(client: &mut RemoteClient, id: String) -> Result<(), Error> {
     Ok(())
 }
 
-fn require_smtp_out_support(client: &mut RemoteClient) -> Result<(), Error> {
+pub fn require_smtp_out_support(client: &mut RemoteClient) -> Result<(), Error> {
     let mut buffer = Vec::new();
     let mut responses = client.command(
         s::Command::Simple(s::SimpleCommand::XCryGetUserConfig),

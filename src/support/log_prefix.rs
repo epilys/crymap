@@ -29,7 +29,7 @@ pub struct LogPrefix {
 }
 
 #[derive(Clone)]
-struct Inner {
+pub struct Inner {
     protocol: String,
     user: Option<String>,
     helo: Option<String>,
@@ -117,7 +117,7 @@ impl fmt::Display for LogPrefix {
     }
 }
 
-fn sanitise(mut s: String) -> String {
+pub fn sanitise(mut s: String) -> String {
     s.retain(|c| !c.is_control());
     if let Some((truncate_len, _)) = s.char_indices().nth(64) {
         s.truncate(truncate_len);

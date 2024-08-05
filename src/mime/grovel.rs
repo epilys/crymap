@@ -322,7 +322,7 @@ pub fn grovel<V>(
 /// and does not handle character encoding or transfer encoding. Any 8-bit
 /// characters are required to be UTF-8 to be considered as text.
 #[derive(Debug)]
-struct Groveller<V> {
+pub struct Groveller<V> {
     visitor: Box<dyn Visitor<Output = V>>,
     /// Whether we are currently in the header part of the message.
     in_headers: bool,
@@ -856,7 +856,7 @@ impl<V> Groveller<V> {
     }
 }
 
-fn could_be_continuation(tail: &[u8]) -> bool {
+pub fn could_be_continuation(tail: &[u8]) -> bool {
     tail.is_empty() || tail.starts_with(b" ") || tail.starts_with(b"\t")
 }
 

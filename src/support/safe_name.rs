@@ -39,7 +39,7 @@ pub fn is_safe_name(name: &str) -> bool {
         !name.chars().any(is_forbidden_char)
 }
 
-fn is_forbidden_char(ch: char) -> bool {
+pub fn is_forbidden_char(ch: char) -> bool {
     match ch {
         // '/' is the hierarchy delimiter
         '/' |

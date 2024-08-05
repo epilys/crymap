@@ -266,7 +266,7 @@ impl fmt::Debug for FetchedBodySection {
 }
 
 #[derive(Debug)]
-struct SectionLocator {
+pub struct SectionLocator {
     target: Option<BodySection>,
     level: usize,
     curr_part_number: u32,
@@ -471,7 +471,7 @@ impl SectionLocator {
     }
 }
 
-struct SectionFetcher {
+pub struct SectionFetcher {
     target: Option<BodySection>,
     buffer: Option<io::BufWriter<BufferWriter>>,
     in_headers: bool,

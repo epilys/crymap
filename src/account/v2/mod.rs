@@ -18,8 +18,8 @@
 
 //! The V2 storage and state system was introduced with Crymap 2.0.0.
 
-mod state;
-mod storage;
+pub mod state;
+pub mod storage;
 
 pub use super::v1::account::account_config_file;
 pub use state::{

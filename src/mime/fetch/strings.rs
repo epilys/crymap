@@ -20,7 +20,7 @@ use std::borrow::Cow;
 
 use crate::mime::encoded_word;
 
-fn to_utf8(cow: Cow<[u8]>) -> Cow<str> {
+pub fn to_utf8(cow: Cow<[u8]>) -> Cow<str> {
     match cow {
         Cow::Owned(owned) => Cow::Owned(match String::from_utf8(owned) {
             Ok(s) => s,
@@ -56,7 +56,7 @@ pub fn decode_routing(routing: Vec<Vec<Cow<[u8]>>>) -> String {
     s
 }
 
-fn decode_sequence(phrase: Vec<Cow<[u8]>>, delim: u8) -> String {
+pub fn decode_sequence(phrase: Vec<Cow<[u8]>>, delim: u8) -> String {
     if 1 == phrase.len() {
         decode_atom(phrase.into_iter().next().unwrap())
     } else {

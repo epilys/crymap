@@ -775,7 +775,7 @@ pub(super) fn capability_data() -> s::CapabilityData<'static> {
     }
 }
 
-fn maybe_tagged_response(
+pub fn maybe_tagged_response(
     tag: Cow<'_, str>,
     res: s::Response<'static>,
 ) -> s::ResponseLine<'static> {

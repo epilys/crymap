@@ -57,7 +57,7 @@
 use crate::support::dns;
 
 #[cfg(any(test, feature = "dev-tools"))]
-mod compile {
+pub mod compile {
     use super::*;
 
     struct Node {
@@ -221,7 +221,7 @@ pub fn organisational_domain(domain: &dns::Name) -> dns::Name {
     eval(PSL_DATA, domain)
 }
 
-fn eval(mut psl_data: &str, domain: &dns::Name) -> dns::Name {
+pub fn eval(mut psl_data: &str, domain: &dns::Name) -> dns::Name {
     let domain_str = domain.to_ascii().to_lowercase();
 
     // We have a special case for this domain in the test build for the sake of

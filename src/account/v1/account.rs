@@ -660,7 +660,7 @@ impl Account {
     }
 }
 
-fn clean_tmp(log_prefix: &str, tmp: &Path) -> Result<(), io::Error> {
+pub fn clean_tmp(log_prefix: &str, tmp: &Path) -> Result<(), io::Error> {
     for entry in fs::read_dir(tmp)? {
         let entry = entry?;
         if entry
@@ -696,7 +696,7 @@ fn clean_tmp(log_prefix: &str, tmp: &Path) -> Result<(), io::Error> {
     Ok(())
 }
 
-fn clean_garbage(garbage: &Path) -> Result<(), io::Error> {
+pub fn clean_garbage(garbage: &Path) -> Result<(), io::Error> {
     for entry in fs::read_dir(garbage)? {
         let entry = entry?;
         let path = entry.path();

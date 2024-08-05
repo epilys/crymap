@@ -152,7 +152,7 @@ impl StatefulMailbox {
     }
 }
 
-fn expunge_deadline() -> DateTime<Utc> {
+pub fn expunge_deadline() -> DateTime<Utc> {
     Utc::now() + chrono::Duration::hours(24)
 }
 

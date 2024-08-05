@@ -386,7 +386,7 @@ impl<'a> Iterator for MacroElements<'a> {
     }
 }
 
-fn parse_macro_expand(mut s: &str) -> Result<MacroElement<'_>, Error> {
+pub fn parse_macro_expand(mut s: &str) -> Result<MacroElement<'_>, Error> {
     let mut chars = s.chars();
     let kind = match chars.next().map(|c| c.to_ascii_lowercase()) {
         None => return Err(Error::EmptyMacro),

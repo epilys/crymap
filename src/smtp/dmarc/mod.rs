@@ -16,8 +16,8 @@
 // You should have received a copy of the GNU General Public License along with
 // Crymap. If not, see <http://www.gnu.org/licenses/>.
 
-mod psl;
-mod syntax;
+pub mod psl;
+pub mod syntax;
 
 #[allow(unused_imports)]
 pub use psl::organisational_domain;

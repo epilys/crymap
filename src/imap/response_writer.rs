@@ -160,7 +160,7 @@ pub async fn write_responses(
 const TEXT_FLUSH_THRESH: usize = 4096;
 const SPLICE_FLUSH_THRESH: usize = 4;
 
-struct State {
+pub struct State {
     /// The buffer into which `LexWriter` writes.
     ///
     /// Splices are stored separately, retaining their original `impl Read`, to
@@ -180,7 +180,7 @@ struct State {
     unicode: bool,
 }
 
-struct LiteralSplice {
+pub struct LiteralSplice {
     /// The offset within `text` of this splice.
     offset: usize,
     data: Box<dyn Read>,

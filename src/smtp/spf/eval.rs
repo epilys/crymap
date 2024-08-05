@@ -92,7 +92,7 @@ pub enum Explanation {
 
 /// The (possibly, see `skipped_directive`) conclusive result of evaluating an
 /// SPF record.
-struct ResultInfo {
+pub struct ResultInfo {
     /// The SPF result itself.
     result: SpfResult,
 
@@ -134,7 +134,7 @@ pub struct Context<'a> {
 
 /// Internal state carried through a single SPF evaluation pass.
 #[derive(Default)]
-struct EvaluatorState {
+pub struct EvaluatorState {
     /// The number of DNS directives triggered so far (not including
     /// sub-queries from `ptr` or `mx` directives).
     dns_directives: u32,
@@ -156,7 +156,7 @@ struct EvaluatorState {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
-enum DirectiveError {
+pub enum DirectiveError {
     TempFail,
     PermFail,
     NotReady,
@@ -892,7 +892,7 @@ impl EvaluatorState {
 /// Identifies the "validated name" for the given context.
 ///
 /// This is the process described in RFC 7208 § 5.5
-fn find_validated_name<'d>(
+pub fn find_validated_name<'d>(
     dns_cache: &'d mut dns::Cache,
     ctx: &Context<'_>,
     target_domain: &dns::Name,
@@ -949,7 +949,7 @@ fn find_validated_name<'d>(
 /// Performs the error mapping used for top-level DNS queries.
 ///
 /// Defined by RFC 7208 § 5
-fn top_level_error_map<T>(
+pub fn top_level_error_map<T>(
     r: Result<T, dns::CacheError>,
 ) -> Result<Option<T>, DirectiveError> {
     match r {
@@ -960,7 +960,7 @@ fn top_level_error_map<T>(
     }
 }
 
-fn ipv4_addr_matches(a: Ipv4Addr, b: Ipv4Addr, cidr_len: Option<u32>) -> bool {
+pub fn ipv4_addr_matches(a: Ipv4Addr, b: Ipv4Addr, cidr_len: Option<u32>) -> bool {
     if let Some(mask) = cidr_len.and_then(|l| u32::MAX.checked_shl(l)) {
         let a = u32::from_be_bytes(a.octets());
         let b = u32::from_be_bytes(b.octets());
@@ -970,7 +970,7 @@ fn ipv4_addr_matches(a: Ipv4Addr, b: Ipv4Addr, cidr_len: Option<u32>) -> bool {
     }
 }
 
-fn ipv6_addr_matches(a: Ipv6Addr, b: Ipv6Addr, cidr_len: Option<u32>) -> bool {
+pub fn ipv6_addr_matches(a: Ipv6Addr, b: Ipv6Addr, cidr_len: Option<u32>) -> bool {
     if let Some(mask) = cidr_len.and_then(|l| u128::MAX.checked_shl(l)) {
         let a = u128::from_be_bytes(a.octets());
         let b = u128::from_be_bytes(b.octets());

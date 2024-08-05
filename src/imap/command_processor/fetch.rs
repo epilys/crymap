@@ -311,7 +311,7 @@ impl CommandProcessor {
 }
 
 #[derive(Clone, Copy, Debug)]
-struct FetchProperties {
+pub struct FetchProperties {
     set_seen: bool,
     extended_body_structure: bool,
     channel_buffer_size: usize,
@@ -327,7 +327,7 @@ impl Default for FetchProperties {
     }
 }
 
-fn fetch_properties(target: &s::FetchCommandTarget<'_>) -> FetchProperties {
+pub fn fetch_properties(target: &s::FetchCommandTarget<'_>) -> FetchProperties {
     let mut props = FetchProperties::default();
 
     match *target {
@@ -345,7 +345,7 @@ fn fetch_properties(target: &s::FetchCommandTarget<'_>) -> FetchProperties {
     props
 }
 
-fn scan_fetch_properties(props: &mut FetchProperties, att: &s::FetchAtt<'_>) {
+pub fn scan_fetch_properties(props: &mut FetchProperties, att: &s::FetchAtt<'_>) {
     if matches!(
         *att,
         s::FetchAtt::Envelope(_)
@@ -376,7 +376,7 @@ fn scan_fetch_properties(props: &mut FetchProperties, att: &s::FetchAtt<'_>) {
     }
 }
 
-fn fetch_target_from_ast<T>(
+pub fn fetch_target_from_ast<T>(
     request: &mut FetchRequest<T>,
     target: s::FetchCommandTarget<'_>,
 ) where
@@ -412,7 +412,7 @@ fn fetch_target_from_ast<T>(
     }
 }
 
-fn fetch_att_from_ast<T>(request: &mut FetchRequest<T>, att: s::FetchAtt<'_>)
+pub fn fetch_att_from_ast<T>(request: &mut FetchRequest<T>, att: s::FetchAtt<'_>)
 where
     SeqRange<T>: fmt::Debug,
 {
@@ -555,7 +555,7 @@ async fn fetch_response(
     .await;
 }
 
-fn fetch_response_final(response: FetchResponse) -> CmdResult {
+pub fn fetch_response_final(response: FetchResponse) -> CmdResult {
     match response.kind {
         FetchResponseKind::Ok => success(),
         FetchResponseKind::No => Ok(s::Response::Cond(s::CondResponse {
@@ -573,7 +573,7 @@ fn fetch_response_final(response: FetchResponse) -> CmdResult {
     }
 }
 
-fn fetch_att_to_ast(
+pub fn fetch_att_to_ast(
     item: fetch::multi::FetchedItem,
     fetch_properties: FetchProperties,
 ) -> Option<s::MsgAtt<'static>> {
@@ -703,7 +703,7 @@ fn fetch_att_to_ast(
     }
 }
 
-fn envelope_to_ast(env: fetch::envelope::Envelope) -> s::Envelope<'static> {
+pub fn envelope_to_ast(env: fetch::envelope::Envelope) -> s::Envelope<'static> {
     fn addresses_to_ast(
         src: Vec<fetch::envelope::EnvelopeAddress>,
     ) -> Vec<s::Address<'static>> {
@@ -748,7 +748,7 @@ fn envelope_to_ast(env: fetch::envelope::Envelope) -> s::Envelope<'static> {
     }
 }
 
-fn body_structure_to_ast(
+pub fn body_structure_to_ast(
     mut bs: fetch::bodystructure::BodyStructure,
     extended: bool,
 ) -> s::Body<'static> {
@@ -839,7 +839,7 @@ fn body_structure_to_ast(
     }
 }
 
-fn content_parms_to_ast(
+pub fn content_parms_to_ast(
     parms: Vec<(String, String)>,
 ) -> Vec<Cow<'static, str>> {
     let mut ret: Vec<Cow<'static, str>> = Vec::with_capacity(2 * parms.len());
@@ -850,7 +850,7 @@ fn content_parms_to_ast(
     ret
 }
 
-fn content_disposition_to_ast(
+pub fn content_disposition_to_ast(
     disposition: Option<String>,
     parms: Vec<(String, String)>,
 ) -> Option<s::ContentDisposition<'static>> {

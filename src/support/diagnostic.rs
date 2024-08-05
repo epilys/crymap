@@ -38,7 +38,7 @@ pub fn apply_diagnostics(
     Ok(())
 }
 
-fn redirect_stderr(stderr_path: &Path) -> Result<(), Sysexit> {
+pub fn redirect_stderr(stderr_path: &Path) -> Result<(), Sysexit> {
     if let Err(e) = nix::unistd::close(2) {
         error!("failed to redirect stderr: close(stderr): {:?}", e);
         return Err(EX_IOERR);

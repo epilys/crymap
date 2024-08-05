@@ -69,7 +69,7 @@ use crate::support::error::Error;
     Serialize_repr, Deserialize_repr, Clone, Copy, Debug, PartialEq, Eq,
 )]
 #[repr(u8)]
-enum Algorithm {
+pub enum Algorithm {
     Aes128Gcm = 0,
 }
 
@@ -380,7 +380,7 @@ impl<W: Write> Write for Writer<W> {
     }
 }
 
-fn to_ioerr(e: openssl::error::ErrorStack) -> io::Error {
+pub fn to_ioerr(e: openssl::error::ErrorStack) -> io::Error {
     io::Error::new(io::ErrorKind::InvalidData, e)
 }
 

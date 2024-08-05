@@ -510,7 +510,7 @@ impl<'a> TxtRecord<'a> {
 /// and values are not decoded but are fully trimmed. The range associated with
 /// each item is the range of the value *before* trimming; this is used to
 /// determine the `b` field of `RawHeader`.
-fn split_kv_pairs(
+pub fn split_kv_pairs(
     s: &str,
 ) -> impl Iterator<Item = (&str, &str, Range<usize>)> + '_ {
     let mut offset = 0usize;
@@ -532,7 +532,7 @@ fn split_kv_pairs(
 }
 
 /// Decode RFC 6376 DKIM-Quoted-Printable-encoded text.
-fn decode_qp(s: &str) -> Cow<'_, str> {
+pub fn decode_qp(s: &str) -> Cow<'_, str> {
     // QP decoding essentially works by deleting whitespace characters and
     // decoding =XX codes. We can trim the exterior whitespace away, and if
     // there are no whitespace or '=' characters inside after doing so, we know
@@ -577,7 +577,7 @@ fn decode_qp(s: &str) -> Cow<'_, str> {
 }
 
 /// Decode RFC 6376 base64 with embedded folding whitespace.
-fn decode_base64(s: &str) -> Vec<u8> {
+pub fn decode_base64(s: &str) -> Vec<u8> {
     fn is_base64_char(ch: char) -> bool {
         matches!(ch, '0'..='9' | 'a'..='z' | 'A'..='Z' | '+' | '/' | '=')
     }
@@ -598,7 +598,7 @@ fn decode_base64(s: &str) -> Vec<u8> {
     .unwrap_or_else(|_| Vec::new())
 }
 
-fn set_opt<T>(k: &str, opt: &mut Option<T>, v: T) -> Result<(), String> {
+pub fn set_opt<T>(k: &str, opt: &mut Option<T>, v: T) -> Result<(), String> {
     if opt.is_some() {
         return Err(format!("duplicate {k}= tag"));
     }
@@ -607,7 +607,7 @@ fn set_opt<T>(k: &str, opt: &mut Option<T>, v: T) -> Result<(), String> {
     Ok(())
 }
 
-fn decode_timestamp(s: &str) -> Result<DateTime<Utc>, String> {
+pub fn decode_timestamp(s: &str) -> Result<DateTime<Utc>, String> {
     // We require `s` to be parsable as an integer, but silently clamp
     // the date to a representable range.
     let seconds = s

@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("8438capa", "STATUS=SIZE");
 }
 
 #[test]
-fn size_is_reported_and_correct_lower_bound() {
+pub fn size_is_reported_and_correct_lower_bound() {
     let setup = set_up();
     let mut client = setup.connect("8438size");
     quick_log_in(&mut client);

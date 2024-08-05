@@ -21,12 +21,12 @@ use std::borrow::Cow;
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("2971capa", "ID");
 }
 
 #[test]
-fn command_works() {
+pub fn command_works() {
     let setup = set_up();
     let mut client = setup.connect("2971test");
 

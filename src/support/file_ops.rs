@@ -211,7 +211,7 @@ pub fn replicate_directory_for_chroot(
     Ok(())
 }
 
-fn remove_any(path: &Path) -> io::Result<()> {
+pub fn remove_any(path: &Path) -> io::Result<()> {
     fs::remove_file(path).or_else(|_| fs::remove_dir_all(path))
 }
 

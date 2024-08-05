@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("4959capa", "SASL-IR");
 }
 
 #[test]
-fn sasl_ir() {
+pub fn sasl_ir() {
     let setup = set_up();
     let mut client = setup.connect("4959sair");
     skip_greeting(&mut client);

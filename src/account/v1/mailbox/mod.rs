@@ -229,11 +229,11 @@
 //! unwieldy otherwise.
 
 // Basic struct definitions
-mod defs;
+pub mod defs;
 
 // Internal support --- R/W of messages and state transactions
-mod change_tx;
-mod messages; // Also includes low-level APPEND-like operation
+pub mod change_tx;
+pub mod messages; // Also includes low-level APPEND-like operation
 
 // IMAP commands
 // Methods are not 1:1 in cases where the IMAP model does not naturally fit the
@@ -241,16 +241,16 @@ mod messages; // Also includes low-level APPEND-like operation
 // and do not include QRESYNC support, which is a separate operation. It is up
 // to the IMAP protocol layer to decompose/recompose/reformat these
 // discrepancies.
-mod expunge; // EXPUNGE, UID EXPUNGE
-mod fetch; // FETCH, UID FETCH
-mod flags; // STORE, UID STORE
-mod idle; // IDLE, notifications
-mod poll; // NOOP, CHECK, during IDLE, after commands
-mod search; // SEARCH, UID SEARCH
-mod select; // SELECT, EXAMINE, STATUS, also garbage collection
+pub mod expunge; // EXPUNGE, UID EXPUNGE
+pub mod fetch; // FETCH, UID FETCH
+pub mod flags; // STORE, UID STORE
+pub mod idle; // IDLE, notifications
+pub mod poll; // NOOP, CHECK, during IDLE, after commands
+pub mod search; // SEARCH, UID SEARCH
+pub mod select; // SELECT, EXAMINE, STATUS, also garbage collection
 
 #[cfg(feature = "dev-tools")]
-mod zstd_train;
+pub mod zstd_train;
 
 #[allow(unused_imports)]
 pub use defs::{StatefulMailbox, StatelessMailbox};

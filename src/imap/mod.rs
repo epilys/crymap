@@ -18,13 +18,13 @@
 
 pub mod client;
 pub mod command_processor;
-mod lex;
-mod literal_source;
-mod mailbox_name;
-mod request_reader;
-mod response_writer;
+pub mod lex;
+pub mod literal_source;
+pub mod mailbox_name;
+pub mod request_reader;
+pub mod response_writer;
 pub mod server;
 pub mod syntax;
 
 #[cfg(test)]
-mod integration_tests;
+pub mod integration_tests;

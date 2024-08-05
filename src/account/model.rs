@@ -555,7 +555,7 @@ impl FromStr for Flag {
     }
 }
 
-fn is_atom_char(ch: u8) -> bool {
+pub fn is_atom_char(ch: u8) -> bool {
     !matches!(ch, 0..=b' ' | 127..=255 |
               b'(' | b')' | b'{' | b'*' | b'%' | b'\\' | b'"' | b']')
 }
@@ -1609,7 +1609,7 @@ pub struct ForeignSmtpTlsStatus {
     pub tls_version: Option<TlsVersion>,
 }
 
-mod email_id_ser {
+pub mod email_id_ser {
     use std::fmt;
 
     use serde::{Deserializer, Serializer};

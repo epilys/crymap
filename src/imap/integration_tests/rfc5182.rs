@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("5182capa", "SEARCHRES");
 }
 
 #[test]
-fn test_searchres() {
+pub fn test_searchres() {
     let setup = set_up();
     let mut client = setup.connect("5182sres");
     quick_log_in(&mut client);
@@ -112,7 +112,7 @@ fn test_searchres() {
     );
 }
 
-fn assert_searchres(
+pub fn assert_searchres(
     client: &mut PipeClient,
     search_command: &str,
     expect_search_result: bool,

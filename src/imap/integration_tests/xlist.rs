@@ -18,7 +18,7 @@
 
 use super::defs::*;
 
-fn xlist_results_to_str(lines: Vec<s::ResponseLine<'_>>) -> String {
+pub fn xlist_results_to_str(lines: Vec<s::ResponseLine<'_>>) -> String {
     let mut ret = String::new();
     for line in lines {
         match line {
@@ -46,12 +46,12 @@ fn xlist_results_to_str(lines: Vec<s::ResponseLine<'_>>) -> String {
 }
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("XLSTcapa", "XLIST");
 }
 
 #[test]
-fn xlist_results() {
+pub fn xlist_results() {
     let setup = set_up();
     let mut client = setup.connect("XLSTlist");
     quick_log_in(&mut client);

@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("3691capa", "UNSELECT");
 }
 
 #[test]
-fn unselect() {
+pub fn unselect() {
     let setup = set_up();
     let mut client = setup.connect("3691unsl");
     quick_log_in(&mut client);

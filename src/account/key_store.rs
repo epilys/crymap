@@ -357,7 +357,7 @@ impl KeyStore {
     }
 }
 
-fn load_private_key(
+pub fn load_private_key(
     master_key: &MasterKey,
     name: &str,
     root: &Path,

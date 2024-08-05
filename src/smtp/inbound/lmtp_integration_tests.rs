@@ -46,12 +46,12 @@ lazy_static! {
     static ref SYSTEM_DIR: Mutex<Weak<Setup>> = Mutex::new(Weak::new());
 }
 
-struct Setup {
+pub struct Setup {
     system_dir: TempDir,
     master_key: Arc<MasterKey>,
 }
 
-fn set_up() -> Arc<Setup> {
+pub fn set_up() -> Arc<Setup> {
     crate::init_test_log();
 
     let mut lock = SYSTEM_DIR.lock().unwrap();
@@ -65,7 +65,7 @@ fn set_up() -> Arc<Setup> {
     setup
 }
 
-fn set_up_new_root() -> Setup {
+pub fn set_up_new_root() -> Setup {
     let system_dir = TempDir::new().unwrap();
     let master_key = Arc::new(MasterKey::new());
 
@@ -131,7 +131,7 @@ async fn run_server(data_root: PathBuf, cxn_name: &str, server_io: UnixStream) {
 }
 
 /// Return whether the given account received the specified email.
-fn received_email(setup: &Setup, account_name: &str, email: &str) -> bool {
+pub fn received_email(setup: &Setup, account_name: &str, email: &str) -> bool {
     let mut account = Account::new(
         LogPrefix::new("verify".to_owned()),
         setup.system_dir.path().join(account_name),
@@ -173,7 +173,7 @@ fn received_email(setup: &Setup, account_name: &str, email: &str) -> bool {
 }
 
 #[test]
-fn first_contact() {
+pub fn first_contact() {
     let setup = set_up();
     let mut cxn = setup.connect("first_contact");
 
@@ -197,7 +197,7 @@ fn first_contact() {
 }
 
 #[test]
-fn test_lhlo() {
+pub fn test_lhlo() {
     let setup = set_up();
     let mut cxn = setup.connect("test_lhlo");
 
@@ -212,7 +212,7 @@ fn test_lhlo() {
 }
 
 #[test]
-fn misc_commands() {
+pub fn misc_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("misc_commands");
     cxn.skip_pleasantries("LHLO misc_commands");
@@ -227,7 +227,7 @@ fn misc_commands() {
 }
 
 #[test]
-fn data_delivery() {
+pub fn data_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("data_delivery");
     cxn.skip_pleasantries("LHLO data_delivery");
@@ -263,7 +263,7 @@ fn data_delivery() {
 }
 
 #[test]
-fn data_delivery_from_unix_client() {
+pub fn data_delivery_from_unix_client() {
     let setup = set_up();
     let mut cxn = setup.connect("unix_unix_data_delivery");
     cxn.skip_pleasantries("LHLO unix_unix_data_delivery");
@@ -289,7 +289,7 @@ fn data_delivery_from_unix_client() {
 }
 
 #[test]
-fn unix_data_delivery_from_dos_client() {
+pub fn unix_data_delivery_from_dos_client() {
     let setup = set_up();
     let mut cxn = setup.connect("unix_dos_data_delivery");
     cxn.skip_pleasantries("LHLO unix_dos_data_delivery");
@@ -307,7 +307,7 @@ fn unix_data_delivery_from_dos_client() {
 }
 
 #[test]
-fn bdat_delivery() {
+pub fn bdat_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("bdat_delivery");
     cxn.skip_pleasantries("LHLO bdat_delivery");
@@ -355,7 +355,7 @@ fn bdat_delivery() {
 // This specifically tests that spilled buffers are reset properly when
 // delivering to multiple accounts.
 #[test]
-fn large_delivery() {
+pub fn large_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("large_delivery");
     cxn.skip_pleasantries("LHLO large_delivery");
@@ -379,7 +379,7 @@ fn large_delivery() {
 }
 
 #[test]
-fn huge_message_rejected() {
+pub fn huge_message_rejected() {
     let setup = set_up();
     let mut cxn = setup.connect("huge_delivery");
     cxn.skip_pleasantries("LHLO huge_delivery");
@@ -405,7 +405,7 @@ fn huge_message_rejected() {
 }
 
 #[test]
-fn huge_mail_from_size_rejected() {
+pub fn huge_mail_from_size_rejected() {
     let setup = set_up();
     let mut cxn = setup.connect("huge_mail_from");
     cxn.skip_pleasantries("LHLO huge_mail_from");
@@ -414,7 +414,7 @@ fn huge_mail_from_size_rejected() {
 }
 
 #[test]
-fn failed_delivery() {
+pub fn failed_delivery() {
     let setup = set_up();
     let mut cxn = setup.connect("failed_delivery");
     cxn.skip_pleasantries("LHLO failed_delivery");
@@ -442,7 +442,7 @@ fn failed_delivery() {
 }
 
 #[test]
-fn failed_rcpt_to() {
+pub fn failed_rcpt_to() {
     let setup = set_up();
     let mut cxn = setup.connect("failed_rcpt_to");
     cxn.skip_pleasantries("LHLO failed_rcpt_to");
@@ -453,7 +453,7 @@ fn failed_rcpt_to() {
 }
 
 #[test]
-fn out_of_order_commands() {
+pub fn out_of_order_commands() {
     let setup = set_up();
     let mut cxn = setup.connect("out_of_order_commands");
     cxn.read_responses(); // Skip greeting
@@ -523,7 +523,7 @@ fn out_of_order_commands() {
 }
 
 #[test]
-fn start_tls() {
+pub fn start_tls() {
     let setup = set_up();
     let mut cxn = setup.connect("starttls");
     cxn.skip_pleasantries("LHLO starttls");

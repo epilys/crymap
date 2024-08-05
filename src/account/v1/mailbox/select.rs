@@ -321,7 +321,7 @@ pub(super) fn list_rollups(
 
 /// Order `rollups` so that the "latest" (i.e., the one to load from) is at the
 /// end, and `delete_rollup` and `delete_transactions` are set appropriately.
-fn classify_rollups(rollups: &mut [RollupInfo]) {
+pub fn classify_rollups(rollups: &mut [RollupInfo]) {
     if rollups.is_empty() {
         return;
     }
@@ -352,7 +352,7 @@ fn classify_rollups(rollups: &mut [RollupInfo]) {
 }
 
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub(super) struct RollupInfo {
+pub struct RollupInfo {
     // First field since it's the main thing we sort by
     // We only include the CID since we also use this to determine which CIDs
     // can be expunged during cleanup. While Modseqs /should/ be totally

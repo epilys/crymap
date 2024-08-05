@@ -92,7 +92,7 @@ pub fn claim(
     .map(|u| min_uid.max(u))
 }
 
-fn read_only_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
+pub fn read_only_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
     if let Some(last_claimed) = get_current_tokens(&token_dir(root))
         .ok()
         .and_then(|s| s.last().copied().and_then(Uid::of))
@@ -107,7 +107,7 @@ fn read_only_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
     }
 }
 
-fn read_write_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
+pub fn read_write_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
     let tdir = token_dir(root);
 
     loop {
@@ -193,11 +193,11 @@ fn read_write_claim(root: &Path, max_uid: Uid) -> Option<Uid> {
     }
 }
 
-fn token_dir(root: &Path) -> PathBuf {
+pub fn token_dir(root: &Path) -> PathBuf {
     root.join("recent")
 }
 
-fn get_current_tokens(token_dir: &Path) -> io::Result<Vec<u32>> {
+pub fn get_current_tokens(token_dir: &Path) -> io::Result<Vec<u32>> {
     let mut result = Vec::new();
 
     for entry in fs::read_dir(token_dir)? {
@@ -215,7 +215,7 @@ fn get_current_tokens(token_dir: &Path) -> io::Result<Vec<u32>> {
     Ok(result)
 }
 
-fn init_token_dir(tdir: &Path, max_uid: Uid) -> io::Result<()> {
+pub fn init_token_dir(tdir: &Path, max_uid: Uid) -> io::Result<()> {
     fs::DirBuilder::new()
         .mode(0o700)
         .create(tdir)

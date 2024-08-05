@@ -23,7 +23,7 @@ use crate::support::error::Error;
 use crate::test_data::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     let setup = set_up();
     let mut client = setup.connect("4315capa");
 
@@ -39,7 +39,7 @@ fn capability_declared() {
 }
 
 #[test]
-fn uid_expunge() {
+pub fn uid_expunge() {
     let setup = set_up();
     let mut client = setup.connect("4315uidx");
     quick_log_in(&mut client);
@@ -69,7 +69,7 @@ fn uid_expunge() {
 }
 
 #[test]
-fn append_uid() {
+pub fn append_uid() {
     let setup = set_up();
     let mut client = setup.connect("4315appu");
     quick_log_in(&mut client);
@@ -108,7 +108,7 @@ fn append_uid() {
 }
 
 #[test]
-fn copy_uid() {
+pub fn copy_uid() {
     let setup = set_up();
     let mut client = setup.connect("4315copu");
     quick_log_in(&mut client);

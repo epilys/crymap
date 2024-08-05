@@ -344,7 +344,7 @@ impl StatefulMailbox {
 /// I18NLEVEL=1 extension, RFC 5255), but is preferable since it is actually a
 /// comparison sanctioned by the Unicode Consortium and isn't 13+ years out of
 /// date.
-fn to_regex(pat: &str) -> Regex {
+pub fn to_regex(pat: &str) -> Regex {
     let mut regex_str = String::new();
     for (ix, chunk) in
         pat.split_whitespace().filter(|s| !s.is_empty()).enumerate()

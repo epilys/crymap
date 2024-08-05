@@ -717,7 +717,7 @@ impl<'a> HierIdScheme<'a> {
 /// The returned ID is a suggested starting point for linear probing. In the
 /// presence of concurrent modification to the ID allocations, it may well
 /// already be allocated.
-fn probe_for_first_id(guess: u32, exists: impl Fn(u32) -> bool) -> u32 {
+pub fn probe_for_first_id(guess: u32, exists: impl Fn(u32) -> bool) -> u32 {
     let mut maximum_used = 0u32;
     let mut minimum_free = u32::MAX;
 

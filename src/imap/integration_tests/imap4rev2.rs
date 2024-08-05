@@ -21,12 +21,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("i4r2capa", "IMAP4rev2");
 }
 
 #[test]
-fn status_deleted() {
+pub fn status_deleted() {
     let setup = set_up();
     let mut client = setup.connect("i4r2stde");
     quick_log_in(&mut client);
@@ -54,7 +54,7 @@ fn status_deleted() {
 }
 
 #[test]
-fn unicode_enabled() {
+pub fn unicode_enabled() {
     let setup = set_up();
     let mut client = setup.connect("i4r2unic");
     quick_log_in(&mut client);
@@ -72,7 +72,7 @@ fn unicode_enabled() {
 }
 
 #[test]
-fn esearch_replaces_search() {
+pub fn esearch_replaces_search() {
     let setup = set_up();
     let mut client = setup.connect("i4r2srch");
     quick_log_in(&mut client);

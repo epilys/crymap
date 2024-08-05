@@ -22,12 +22,12 @@ use super::super::defs::*;
 use super::extract_highest_modseq;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("7162cbcd", "CONDSTORE");
 }
 
 #[test]
-fn condstore_enable() {
+pub fn condstore_enable() {
     let setup = set_up();
     let mut client = setup.connect("7162cbce");
     skip_greeting(&mut client);
@@ -44,7 +44,7 @@ fn condstore_enable() {
 
 // Test that we get the primordial modseq of 1 when selecting an empty mailbox
 #[test]
-fn select_primordial() {
+pub fn select_primordial() {
     let setup = set_up();
     let mut client = setup.connect("7162cbsp");
     quick_log_in(&mut client);

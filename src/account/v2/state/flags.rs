@@ -211,7 +211,7 @@ impl Account {
     }
 }
 
-fn apply_flags(
+pub fn apply_flags(
     dst: &mut SmallBitset,
     flags: &SmallBitset,
     remove_listed: bool,

@@ -144,7 +144,7 @@ pub struct SearchFetcher<F> {
 }
 
 #[derive(Debug)]
-struct ContentAccumulator {
+pub struct ContentAccumulator {
     dst: Rc<RefCell<String>>,
     collect_content: bool,
 }

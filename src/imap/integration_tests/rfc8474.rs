@@ -21,12 +21,12 @@ use std::borrow::Cow;
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("8474capa", "OBJECTID");
 }
 
 #[test]
-fn mailbox_ids() {
+pub fn mailbox_ids() {
     let setup = set_up();
     let mut client = setup.connect("8474mbid");
     quick_log_in(&mut client);
@@ -101,7 +101,7 @@ fn mailbox_ids() {
 }
 
 #[test]
-fn inbox_rename_vs_mailbox_id() {
+pub fn inbox_rename_vs_mailbox_id() {
     // Need to use a unique root since we'll be destroying INBOX
     let setup = set_up_new_root();
     let mut client = setup.connect("8474reni");
@@ -148,7 +148,7 @@ fn inbox_rename_vs_mailbox_id() {
 }
 
 #[test]
-fn email_id() {
+pub fn email_id() {
     let setup = set_up();
     let mut client = setup.connect("8474emid");
     quick_log_in(&mut client);

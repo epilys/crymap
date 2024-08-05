@@ -21,12 +21,12 @@ use chrono::prelude::*;
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("8514capa", "SAVEDATE");
 }
 
 #[test]
-fn fetch() {
+pub fn fetch() {
     let setup = set_up();
     let mut client = setup.connect("8514ftch");
     quick_log_in(&mut client);
@@ -42,7 +42,7 @@ fn fetch() {
 }
 
 #[test]
-fn search() {
+pub fn search() {
     let setup = set_up();
     let mut client = setup.connect("8514srch");
     quick_log_in(&mut client);

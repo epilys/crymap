@@ -57,7 +57,7 @@ pub(super) struct Service {
     pub(super) send_request: mpsc::Sender<Request>,
 }
 
-struct Server {
+pub struct Server {
     io: BufStream<ServerIo>,
     log_prefix: LogPrefix,
     ssl_acceptor: Option<SslAcceptor>,
@@ -115,14 +115,14 @@ pub(super) async fn run(
     }
 }
 
-struct SendData {
+pub struct SendData {
     stream: DuplexStream,
     recipient_responses:
         oneshot::Sender<mpsc::Sender<Result<(), SmtpResponse<'static>>>>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum ResponseKind {
+pub enum ResponseKind {
     /// The last in a series of responses.
     ///
     /// Indicates no continuation and forces a flush.

@@ -26,10 +26,10 @@ macro_rules! die {
 pub mod main;
 
 #[cfg(feature = "dev-tools")]
-mod imap_test;
+pub mod imap_test;
 
-mod deliver;
-mod remote;
-mod sanity;
-mod serve;
-mod user;
+pub mod deliver;
+pub mod remote;
+pub mod sanity;
+pub mod serve;
+pub mod user;

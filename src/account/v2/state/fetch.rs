@@ -488,7 +488,7 @@ impl MessageAccessor for MailboxMessageAccessor<'_, '_> {
 }
 
 #[derive(Debug)]
-enum SingleFetchResponse {
+pub enum SingleFetchResponse {
     Fetched(Seqnum, Vec<FetchedItem>),
     NotModified,
     SilentExpunge,

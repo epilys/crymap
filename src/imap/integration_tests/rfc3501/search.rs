@@ -20,7 +20,7 @@ use std::borrow::Cow;
 
 use super::super::defs::*;
 
-fn search(client: &mut PipeClient, command: &'static str) -> Vec<u32> {
+pub fn search(client: &mut PipeClient, command: &'static str) -> Vec<u32> {
     command!(mut responses = client, c(command));
     assert_eq!(2, responses.len());
     assert_tagged_ok(responses.pop().unwrap());
@@ -35,7 +35,7 @@ fn search(client: &mut PipeClient, command: &'static str) -> Vec<u32> {
 }
 
 #[test]
-fn search_queries() {
+pub fn search_queries() {
     let setup = set_up();
     let mut client = setup.connect("3501sesq");
     quick_log_in(&mut client);
@@ -229,7 +229,7 @@ fn search_queries() {
 }
 
 #[test]
-fn charsets() {
+pub fn charsets() {
     let setup = set_up();
     let mut client = setup.connect("3501secs");
     quick_log_in(&mut client);

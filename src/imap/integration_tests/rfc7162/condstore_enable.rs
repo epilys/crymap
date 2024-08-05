@@ -20,7 +20,7 @@ use super::super::defs::*;
 use super::extract_highest_modseq;
 
 #[test]
-fn condstore_enable() {
+pub fn condstore_enable() {
     let setup = set_up();
     let mut client = setup.connect("7162cece");
     quick_log_in(&mut client);
@@ -43,7 +43,7 @@ fn condstore_enable() {
     assert_enabled_by(&setup, "ENABLE CONDSTORE");
 }
 
-fn assert_enabled_by(setup: &Setup, command: &'static str) {
+pub fn assert_enabled_by(setup: &Setup, command: &'static str) {
     let mut client = setup.connect("7162cece");
     quick_log_in(&mut client);
     quick_select(&mut client, "7162cece");
@@ -66,7 +66,7 @@ fn assert_enabled_by(setup: &Setup, command: &'static str) {
 }
 
 #[test]
-fn enable_primordial() {
+pub fn enable_primordial() {
     let setup = set_up();
     let mut client = setup.connect("7162cesp");
     quick_log_in(&mut client);

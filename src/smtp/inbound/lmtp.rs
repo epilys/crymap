@@ -85,7 +85,7 @@ pub async fn serve_lmtp(
     .0
 }
 
-struct LmtpService {
+pub struct LmtpService {
     log_prefix: LogPrefix,
     config: Arc<SystemConfig>,
     common_paths: Arc<CommonPaths>,

@@ -111,10 +111,10 @@ impl Compression {
     }
 }
 
-fn box_r<'a>(r: impl BufRead + 'a) -> Box<dyn BufRead + 'a> {
+pub fn box_r<'a>(r: impl BufRead + 'a) -> Box<dyn BufRead + 'a> {
     Box::new(r)
 }
 
-fn box_w<'a>(w: impl FinishWrite + 'a) -> Box<dyn FinishWrite + 'a> {
+pub fn box_w<'a>(w: impl FinishWrite + 'a) -> Box<dyn FinishWrite + 'a> {
     Box::new(w)
 }

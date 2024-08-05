@@ -20,7 +20,7 @@ use super::super::defs::*;
 use crate::support::error::Error;
 
 #[test]
-fn mailbox_management() {
+pub fn mailbox_management() {
     let setup = set_up();
     let mut client = setup.connect("3501mbmm");
     quick_log_in(&mut client);
@@ -88,7 +88,7 @@ fn mailbox_management() {
 }
 
 #[test]
-fn subscription_management() {
+pub fn subscription_management() {
     let setup = set_up();
     let mut client = setup.connect("3501mbsm");
     quick_log_in(&mut client);
@@ -134,7 +134,7 @@ fn subscription_management() {
 }
 
 #[test]
-fn error_cases() {
+pub fn error_cases() {
     let setup = set_up();
     let mut client = setup.connect("3501mbec");
     quick_log_in(&mut client);
@@ -267,7 +267,7 @@ fn error_cases() {
 }
 
 #[test]
-fn delete_mailbox_in_use() {
+pub fn delete_mailbox_in_use() {
     let setup = set_up();
     let mut client = setup.connect("3501mbdi");
     quick_log_in(&mut client);

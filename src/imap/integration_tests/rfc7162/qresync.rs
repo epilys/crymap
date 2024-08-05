@@ -20,12 +20,12 @@ use super::super::defs::*;
 use super::extract_highest_modseq;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("7162qrca", "QRESYNC");
 }
 
 #[test]
-fn qresync_select() {
+pub fn qresync_select() {
     let setup = set_up();
     let mut client = setup.connect("7162qrqs");
     quick_log_in(&mut client);
@@ -166,7 +166,7 @@ fn qresync_select() {
 }
 
 #[test]
-fn qresync_expunge() {
+pub fn qresync_expunge() {
     let setup = set_up();
     let mut client = setup.connect("7162qrex");
     quick_log_in(&mut client);
@@ -208,7 +208,7 @@ fn qresync_expunge() {
 }
 
 #[test]
-fn qresync_delayed_vanished() {
+pub fn qresync_delayed_vanished() {
     let setup = set_up();
     let mut client = setup.connect("7162qrdv");
     quick_log_in(&mut client);
@@ -243,7 +243,7 @@ fn qresync_delayed_vanished() {
 }
 
 #[test]
-fn qresync_fetch_vanished() {
+pub fn qresync_fetch_vanished() {
     let setup = set_up();
     let mut client = setup.connect("7162qrfv");
     quick_log_in(&mut client);

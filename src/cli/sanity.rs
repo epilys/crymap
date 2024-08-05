@@ -141,7 +141,7 @@ async fn sanity_check_impl(
     }
 }
 
-fn select_ip_addresses(cmd: &SmtpOutSanityCheckSubcommand) -> Vec<IpAddr> {
+pub fn select_ip_addresses(cmd: &SmtpOutSanityCheckSubcommand) -> Vec<IpAddr> {
     if let Some(ip) = cmd.ip {
         vec![ip]
     } else {
@@ -399,7 +399,7 @@ async fn check_dkim(
     }
 }
 
-fn generate_dkim_config(
+pub fn generate_dkim_config(
     domain: &dns::Name,
 ) -> Result<(), openssl::error::ErrorStack> {
     fn format_txt(algorithm: &str, pub_key: &[u8]) -> String {

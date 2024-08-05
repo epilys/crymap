@@ -308,7 +308,7 @@ impl ServerIo {
     }
 }
 
-enum Mode {
+pub enum Mode {
     Cleartext(FdPairRw),
     Ssl(SslStream<FdPairRw>),
 }
@@ -405,7 +405,7 @@ impl AsyncWrite for ServerIo {
 /// This structure is tracked separately from the actual reader/writer as we
 /// need to be able to "see through" the SSL stream in order to wait on the
 /// underlying FDs to become ready.
-struct FdPair {
+pub struct FdPair {
     read: AsyncFd<RawFd>,
     write: Option<AsyncFd<RawFd>>,
 }
@@ -422,7 +422,7 @@ impl FdPair {
 
 /// Implements both the synchronous and asynchronous read and write traits atop
 /// raw file descriptors.
-struct FdPairRw(Rc<FdPair>);
+pub struct FdPairRw(Rc<FdPair>);
 
 impl io::Read for FdPairRw {
     fn read(&mut self, dst: &mut [u8]) -> io::Result<usize> {
@@ -502,11 +502,11 @@ impl AsyncWrite for FdPairRw {
     }
 }
 
-fn nix_to_io(e: nix::Error) -> io::Error {
+pub fn nix_to_io(e: nix::Error) -> io::Error {
     io::Error::from_raw_os_error(e as i32)
 }
 
-fn mhss_to_error<S>(mhss: openssl::ssl::MidHandshakeSslStream<S>) -> Error {
+pub fn mhss_to_error<S>(mhss: openssl::ssl::MidHandshakeSslStream<S>) -> Error {
     let e = mhss.into_error();
     if let Some(es) = e.ssl_error() {
         Error::Ssl(es.clone())

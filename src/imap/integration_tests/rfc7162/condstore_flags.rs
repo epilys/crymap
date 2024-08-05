@@ -22,7 +22,7 @@ use super::super::defs::*;
 use crate::account::model::Flag;
 
 #[test]
-fn store_unchanged_since() {
+pub fn store_unchanged_since() {
     let setup = set_up();
     let mut client = setup.connect("7162cfsu");
     quick_log_in(&mut client);
@@ -135,7 +135,7 @@ fn store_unchanged_since() {
 }
 
 #[test]
-fn store_unchanged_concurrent() {
+pub fn store_unchanged_concurrent() {
     let setup = set_up();
     let mut client = setup.connect("7162cfuc");
     quick_log_in(&mut client);

@@ -25,12 +25,12 @@ use super::defs::*;
 use crate::test_data;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("7888capa", "LITERAL+");
 }
 
 #[test]
-fn command_non_synchronising_literal() {
+pub fn command_non_synchronising_literal() {
     let setup = set_up();
     let mut client = setup.connect("7888cnsl");
     quick_log_in(&mut client);
@@ -67,7 +67,7 @@ fn command_non_synchronising_literal() {
 }
 
 #[test]
-fn append_non_synchronising_literal() {
+pub fn append_non_synchronising_literal() {
     let setup = set_up();
     let mut client = setup.connect("7888ansl");
     quick_log_in(&mut client);

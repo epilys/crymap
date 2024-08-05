@@ -334,7 +334,7 @@ pub async fn smtpsub(
     local_set.await;
 }
 
-fn smtp_host_name(system_config: &SystemConfig) -> String {
+pub fn smtp_host_name(system_config: &SystemConfig) -> String {
     if system_config.smtp.host_name.is_empty() {
         let host_name_cstr = nix::unistd::gethostname().unwrap_or_else(|e| {
             fatal!(
@@ -355,7 +355,7 @@ fn smtp_host_name(system_config: &SystemConfig) -> String {
     }
 }
 
-fn create_ssl_acceptor(
+pub fn create_ssl_acceptor(
     system_config: &SystemConfig,
     system_root: &Path,
 ) -> SslAcceptor {
@@ -399,7 +399,7 @@ fn create_ssl_acceptor(
     acceptor.build()
 }
 
-fn configure_system(
+pub fn configure_system(
     protocol: &str,
     system_config: &SystemConfig,
     users_root: &mut PathBuf,

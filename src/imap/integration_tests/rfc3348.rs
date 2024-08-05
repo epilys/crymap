@@ -19,12 +19,12 @@
 use super::defs::*;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("3348capa", "CHILDREN");
 }
 
 #[test]
-fn children_attributes_returned() {
+pub fn children_attributes_returned() {
     let setup = set_up();
     let mut client = setup.connect("3348attr");
     quick_log_in(&mut client);

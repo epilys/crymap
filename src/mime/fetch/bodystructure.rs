@@ -266,7 +266,7 @@ impl BodyStructureFetcher {
     }
 }
 
-fn extend_parms(
+pub fn extend_parms(
     dst: &mut Vec<(String, String)>,
     parms: &[(Cow<[u8]>, Cow<[u8]>)],
 ) {

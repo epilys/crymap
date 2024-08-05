@@ -2069,7 +2069,7 @@ syntax_rule! {
 
 // ==================== PRIMITIVE PARSERS ====================
 
-fn normal_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn normal_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     map(
         bytes::complete::take_while1(|b| match b {
             0..=b' ' => false,
@@ -2099,7 +2099,7 @@ fn backslash_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     )(i)
 }
 
-fn astring_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn astring_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     map(
         bytes::complete::take_while1(|b| match b {
             0..=b' ' => false,
@@ -2125,7 +2125,7 @@ fn tag_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     )(i)
 }
 
-fn list_mailbox_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn list_mailbox_atom(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     map(
         bytes::complete::take_while1(|b| match b {
             0..=b' ' => false,
@@ -2194,11 +2194,11 @@ fn quoted_char(i: &[u8]) -> IResult<&[u8], &[u8]> {
     sequence::preceded(tag("\\"), alt((tag("\\"), tag("\""))))(i)
 }
 
-fn quoted_string_content(i: &[u8]) -> IResult<&[u8], &[u8]> {
+pub fn quoted_string_content(i: &[u8]) -> IResult<&[u8], &[u8]> {
     alt((quoted_char, is_not("\r\n\"\\")))(i)
 }
 
-fn quoted(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn quoted(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     sequence::delimited(
         tag("\""),
         multi::fold_many0(
@@ -2217,74 +2217,74 @@ fn quoted(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     )(i)
 }
 
-fn string(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn string(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     alt((quoted, map(literal, String::from_utf8_lossy)))(i)
 }
 
-fn astring(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn astring(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     alt((astring_atom, string))(i)
 }
 
-fn nstring(i: &[u8]) -> IResult<&[u8], Option<Cow<str>>> {
+pub fn nstring(i: &[u8]) -> IResult<&[u8], Option<Cow<str>>> {
     alt((map(kw("NIL"), |_| None), map(string, Some)))(i)
 }
 
 // Read: "mailbox as used by LIST and LSUB"
 // Because naturally we need different syntax for that than other uses of
 // mailbox names.
-fn list_mailbox(i: &[u8]) -> IResult<&[u8], MailboxName<'_>> {
+pub fn list_mailbox(i: &[u8]) -> IResult<&[u8], MailboxName<'_>> {
     map(alt((list_mailbox_atom, string)), MailboxName::of_wire)(i)
 }
 
-fn mailbox(i: &[u8]) -> IResult<&[u8], MailboxName<'_>> {
+pub fn mailbox(i: &[u8]) -> IResult<&[u8], MailboxName<'_>> {
     map(astring, MailboxName::of_wire)(i)
 }
 
-fn sequence_set(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn sequence_set(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     map(
         alt((is_a("0123456789:*,"), tag("$"))),
         String::from_utf8_lossy,
     )(i)
 }
 
-fn text(i: &[u8]) -> IResult<&[u8], Cow<str>> {
+pub fn text(i: &[u8]) -> IResult<&[u8], Cow<str>> {
     map(is_not("\r\n"), String::from_utf8_lossy)(i)
 }
 
-fn keyword(i: &[u8]) -> IResult<&[u8], Flag> {
+pub fn keyword(i: &[u8]) -> IResult<&[u8], Flag> {
     map_opt(normal_atom, |a| a.parse::<Flag>().ok())(i)
 }
 
-fn flag(i: &[u8]) -> IResult<&[u8], Flag> {
+pub fn flag(i: &[u8]) -> IResult<&[u8], Flag> {
     alt((keyword, map_opt(backslash_atom, |s| s.parse::<Flag>().ok())))(i)
 }
 
-fn parse_u32_infallible(i: &[u8]) -> u32 {
+pub fn parse_u32_infallible(i: &[u8]) -> u32 {
     str::from_utf8(i).unwrap().parse::<u32>().unwrap()
 }
 
-fn one_digit(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn one_digit(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(1, 1, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn two_digit(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn two_digit(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(2, 2, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn four_digit(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn four_digit(i: &[u8]) -> IResult<&[u8], u32> {
     combinator::map(
         bytes::complete::take_while_m_n(4, 4, character::is_digit),
         parse_u32_infallible,
     )(i)
 }
 
-fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
+pub fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
     sequence::tuple((
         two_digit,
         sequence::preceded(tag(":"), two_digit),
@@ -2292,7 +2292,7 @@ fn time_of_day(i: &[u8]) -> IResult<&[u8], (u32, u32, u32)> {
     ))(i)
 }
 
-fn numeric_zone(i: &[u8]) -> IResult<&[u8], i32> {
+pub fn numeric_zone(i: &[u8]) -> IResult<&[u8], i32> {
     map(
         sequence::pair(
             alt((tag("+"), tag("-"))),
@@ -2313,7 +2313,7 @@ static MONTH_NAMES: [&str; 12] = [
     "jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct",
     "nov", "dec",
 ];
-fn month(i: &[u8]) -> IResult<&[u8], u32> {
+pub fn month(i: &[u8]) -> IResult<&[u8], u32> {
     map_opt(bytes::complete::take(3usize), |name| {
         str::from_utf8(name).ok().and_then(|name| {
             MONTH_NAMES
@@ -2326,7 +2326,7 @@ fn month(i: &[u8]) -> IResult<&[u8], u32> {
     })(i)
 }
 
-fn date_text(i: &[u8]) -> IResult<&[u8], NaiveDate> {
+pub fn date_text(i: &[u8]) -> IResult<&[u8], NaiveDate> {
     map_opt(
         sequence::tuple((
             sequence::terminated(alt((two_digit, one_digit)), tag("-")),
@@ -2337,14 +2337,14 @@ fn date_text(i: &[u8]) -> IResult<&[u8], NaiveDate> {
     )(i)
 }
 
-fn date(i: &[u8]) -> IResult<&[u8], NaiveDate> {
+pub fn date(i: &[u8]) -> IResult<&[u8], NaiveDate> {
     alt((
         date_text,
         sequence::delimited(tag("\""), date_text, tag("\"")),
     ))(i)
 }
 
-fn datetime_date(i: &[u8]) -> IResult<&[u8], NaiveDate> {
+pub fn datetime_date(i: &[u8]) -> IResult<&[u8], NaiveDate> {
     map_opt(
         sequence::tuple((
             sequence::terminated(
@@ -2358,7 +2358,7 @@ fn datetime_date(i: &[u8]) -> IResult<&[u8], NaiveDate> {
     )(i)
 }
 
-fn datetime(i: &[u8]) -> IResult<&[u8], DateTime<FixedOffset>> {
+pub fn datetime(i: &[u8]) -> IResult<&[u8], DateTime<FixedOffset>> {
     map_opt(
         sequence::delimited(
             tag("\""),

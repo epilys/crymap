@@ -22,12 +22,12 @@ use super::defs::*;
 use crate::support::error::Error;
 
 #[test]
-fn capability_declared() {
+pub fn capability_declared() {
     test_require_capability("xcrycapa", "XCRY");
 }
 
 #[test]
-fn user_configuration() {
+pub fn user_configuration() {
     // Need to use a unique root since we'll be changing the password
     let setup = set_up_new_root();
     let mut client = setup.connect("xcryucfg");
@@ -146,7 +146,7 @@ fn user_configuration() {
 }
 
 #[test]
-fn foreign_smtp_tls() {
+pub fn foreign_smtp_tls() {
     let setup = set_up();
     let mut client = setup.connect("xcryfstl");
     quick_log_in(&mut client);
@@ -194,7 +194,7 @@ fn foreign_smtp_tls() {
 }
 
 #[test]
-fn spool_execute() {
+pub fn spool_execute() {
     let setup = set_up();
     let mut client = setup.connect("xcryspex");
     quick_log_in(&mut client);

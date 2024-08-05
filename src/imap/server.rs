@@ -394,7 +394,7 @@ async fn process_input(
     Ok(())
 }
 
-enum ProcessError {
+pub enum ProcessError {
     InputIo(io::Error),
     Protocol,
     Loitering,
@@ -748,7 +748,7 @@ async fn inactivity_monitor(
         .await;
 }
 
-fn command_end_ctl(response: &s::Response<'_>) -> OutputControl {
+pub fn command_end_ctl(response: &s::Response<'_>) -> OutputControl {
     if matches!(
         *response,
         s::Response::Cond(s::CondResponse {
